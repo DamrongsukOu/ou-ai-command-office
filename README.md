@@ -2,6 +2,8 @@
 
 Static MVP v1 dashboard for Ou Personal Agent Office.
 
+Live preview: https://damrongsukou.github.io/ou-ai-command-office/
+
 ## Purpose
 
 This project turns the Master Blueprint into a first usable dashboard with rooms, agents, mock tasks, prompt templates, and recent outputs.
@@ -35,3 +37,4 @@ Do not commit real private data. The dashboard must not display real `private_co
 
 Open `index.html` in a browser.
 
+For GitHub Pages, open the live preview URL above. The deployed page uses `index.html` and public-safe mock data only.
