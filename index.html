@@ -393,6 +393,69 @@
         box-shadow: 0 0 0 2px rgba(255, 209, 95, 0.18), 0 18px 42px rgba(0,0,0,0.44);
       }
 
+      .workflow-console {
+        position: absolute;
+        z-index: 4;
+        left: 50%;
+        bottom: 16px;
+        width: min(620px, calc(100% - 34px));
+        transform: translateX(-50%);
+        display: grid;
+        grid-template-columns: 1fr 1.05fr;
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid rgba(88, 217, 255, 0.32);
+        border-radius: 9px;
+        background: rgba(88, 217, 255, 0.18);
+        box-shadow: 0 22px 48px rgba(0,0,0,0.46);
+      }
+
+      .workflow-section {
+        padding: 12px 14px;
+        background: rgba(5, 13, 24, 0.88);
+      }
+
+      .workflow-section h2 {
+        color: var(--cyan);
+        font-size: 14px;
+        text-transform: uppercase;
+      }
+
+      .workflow-section p {
+        margin-top: 6px;
+        color: #c6d8e5;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .workflow-list {
+        display: grid;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .workflow-list li {
+        display: grid;
+        grid-template-columns: 22px 1fr;
+        gap: 8px;
+        align-items: center;
+        color: #d6e7f1;
+        font-size: 12px;
+      }
+
+      .workflow-list b {
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        color: #06111b;
+        background: var(--green);
+        font-size: 11px;
+      }
+
       .agent-card strong {
         display: block;
         color: var(--gold);
@@ -651,6 +714,27 @@
         gap: 12px;
       }
 
+      .active-output {
+        margin-top: 13px;
+        padding: 12px;
+        border: 1px solid rgba(255, 209, 95, 0.24);
+        border-radius: 8px;
+        background: rgba(255, 209, 95, 0.07);
+      }
+
+      .active-output h3 {
+        color: var(--gold);
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      .active-output p {
+        margin-top: 7px;
+        color: #d9cfae;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
       .tabs {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -780,6 +864,10 @@
         }
         .agent-copy > span { display: none; }
         .memory { width: 220px; left: 34%; }
+        .workflow-console {
+          grid-template-columns: 1fr;
+          bottom: 10px;
+        }
         .status-strip { grid-template-columns: 1fr; }
       }
     </style>
@@ -882,6 +970,8 @@
               <span class="character robot-char"><span class="face"></span><span class="body"></span><span class="memory-core"></span></span>
               <span class="agent-copy"><strong>Memory Steward</strong><span>Data Vault & Long-term Memory</span><small><span class="dot"></span> Online</small></span>
             </button>
+
+            <section class="workflow-console" id="workflowConsole" aria-live="polite"></section>
           </div>
         </section>
 
@@ -894,6 +984,7 @@
           <div class="panel-head" style="margin-top:18px"><span>Recent Outputs</span></div>
           <div id="recentOutputs"></div>
           <button class="view-all">View All Outputs</button>
+          <section class="active-output" id="activeOutput"></section>
         </aside>
       </main>
 
@@ -907,15 +998,60 @@
 
     <script>
       const agents = {
-        chief: ["Chief of Staff", "Daily command, priority routing, quality gate."],
-        asm: ["ASM Sales Agent", "Visit plan, opportunity analysis, proposal support."],
-        follow: ["Customer Follow-up", "Email follow-up, relationship note, Salesforce draft."],
-        portfolio: ["Portfolio Agent", "DCA decision, allocation check, risk-aware timing."],
-        risk: ["Risk Manager", "Portfolio protection, concentration, drawdown watch."],
-        product: ["Product Knowledge", "Solutions fit, technical detail, proposal Q&A."],
-        document: ["Document Studio", "PDF, Excel, presentation, artwork, quality check."],
-        life: ["Life & Balance", "Family, reminder, astrology lens, practical planning."],
-        memory: ["Memory Steward", "Data vault, naming rules, public/private separation."]
+        chief: {
+          name: "Chief of Staff",
+          role: "Daily command, priority routing, quality gate.",
+          output: "Daily Summary, Top 3 Priorities, Waiting Items, Risk Watch, Recommended Actions.",
+          workflow: ["Collect room signals", "Rank top priorities", "Route work to agents", "Publish daily decision brief"]
+        },
+        asm: {
+          name: "ASM Sales Agent",
+          role: "Visit plan, opportunity analysis, proposal support.",
+          output: "Customer Snapshot, Pain Point, Opportunity, Product Fit, Next Action.",
+          workflow: ["Review customer context", "Prepare visit brief", "Map opportunity to product", "Draft follow-up plan"]
+        },
+        follow: {
+          name: "Customer Follow-up",
+          role: "Email follow-up, relationship note, Salesforce draft.",
+          output: "Follow-up Email, Salesforce Update, Due Date, Owner, Risk Note.",
+          workflow: ["Read last meeting note", "Extract open items", "Draft customer message", "Prepare CRM update"]
+        },
+        portfolio: {
+          name: "Portfolio Agent",
+          role: "DCA decision, allocation check, risk-aware timing.",
+          output: "Buy / Wait Decision, Allocation Gap, Timing Note, Risk Warning.",
+          workflow: ["Check target allocation", "Review market timing", "Apply whole-share limits", "Recommend buy/wait"]
+        },
+        risk: {
+          name: "Risk Manager",
+          role: "Portfolio protection, concentration, drawdown watch.",
+          output: "Risk Level, Concentration Flag, Drawdown Watch, Avoid List.",
+          workflow: ["Scan exposure", "Flag overweights", "Check volatility", "Write protection note"]
+        },
+        product: {
+          name: "Product Knowledge",
+          role: "Solutions fit, technical detail, proposal Q&A.",
+          output: "Product Fit, Technical Notes, Objection Handling, Proposal Inputs.",
+          workflow: ["Identify customer need", "Match product capability", "Prepare evidence", "Draft technical answer"]
+        },
+        document: {
+          name: "Document Studio",
+          role: "PDF, Excel, presentation, artwork, quality check.",
+          output: "Requirement Summary, Layout Plan, Generated File Placeholder, QC Notes.",
+          workflow: ["Clarify format", "Build structure", "Generate draft", "Run quality gate"]
+        },
+        life: {
+          name: "Life & Balance",
+          role: "Family, reminder, astrology lens, practical planning.",
+          output: "Energy, Family, Money, Timing, Color/Element Support, Practical Action.",
+          workflow: ["Check personal context", "Read timing lens", "Balance work/family", "Set next reminder"]
+        },
+        memory: {
+          name: "Memory Steward",
+          role: "Data vault, naming rules, public/private separation.",
+          output: "Data Location, Naming Rule, Privacy Status, Next Storage Action.",
+          workflow: ["Classify public/private", "Check folder rule", "Update mock index", "Protect private data"]
+        }
       };
 
       const templates = {
@@ -945,6 +1081,8 @@
       ];
 
       const commandText = document.querySelector("#commandText");
+      const workflowConsole = document.querySelector("#workflowConsole");
+      const activeOutput = document.querySelector("#activeOutput");
 
       function updateClock() {
         const now = new Date();
@@ -953,8 +1091,24 @@
 
       function selectAgent(id) {
         document.querySelectorAll("[data-agent]").forEach((node) => node.classList.toggle("active", node.dataset.agent === id));
-        const [name, role] = agents[id];
-        commandText.value = `Use ${name}: ${role}`;
+        const agent = agents[id];
+        commandText.value = `Use ${agent.name}: ${agent.role}`;
+        workflowConsole.innerHTML = `
+          <div class="workflow-section">
+            <h2>${agent.name}</h2>
+            <p>${agent.role}</p>
+            <p><strong>Output:</strong> ${agent.output}</p>
+          </div>
+          <div class="workflow-section">
+            <ul class="workflow-list">
+              ${agent.workflow.map((step, index) => `<li><b>${index + 1}</b><span>${step}</span></li>`).join("")}
+            </ul>
+          </div>
+        `;
+        activeOutput.innerHTML = `
+          <h3>Active Workflow</h3>
+          <p><strong>${agent.name}</strong><br>${agent.output}</p>
+        `;
       }
 
       document.querySelectorAll("[data-agent]").forEach((node) => {
@@ -962,33 +1116,57 @@
       });
 
       document.querySelectorAll("[data-template]").forEach((node) => {
-        node.addEventListener("click", () => { commandText.value = templates[node.dataset.template]; });
+        node.addEventListener("click", () => {
+          const route = {
+            morning: "chief",
+            sales: "follow",
+            portfolio: "portfolio",
+            document: "document",
+            life: "life"
+          };
+          selectAgent(route[node.dataset.template] || "chief");
+          commandText.value = templates[node.dataset.template];
+        });
       });
 
       document.querySelector("#sendCommand").addEventListener("click", () => {
         const active = document.querySelector(".agent-card.active")?.dataset.agent || "chief";
-        const [name] = agents[active];
-        commandText.value = `${name} accepted: ${commandText.value}`;
+        const agent = agents[active];
+        activeOutput.innerHTML = `
+          <h3>Command Accepted</h3>
+          <p><strong>${agent.name}</strong><br>${commandText.value}</p>
+        `;
+        commandText.value = `${agent.name} accepted: ${commandText.value}`;
       });
 
       document.querySelector("#taskQueue").innerHTML = tasks.map((task, index) => `
-        <div class="task">
+        <button class="task" data-task="${index}">
           <span class="num">${index + 1}</span>
           <div><strong>${task[0]}</strong><small><span class="pill ${task[2]}">${task[2]}</span></small></div>
           <div><small>${task[1]}</small><br /><small>${task[3]}</small></div>
-        </div>
+        </button>
       `).join("");
 
       document.querySelector("#recentOutputs").innerHTML = outputs.map((item) => `
-        <div class="recent">
+        <button class="recent">
           <span class="recent-icon">${item[0]}</span>
           <div><strong>${item[1]}</strong><small>${item[2]}</small></div>
           <small>${item[3]}</small>
-        </div>
+        </button>
       `).join("");
+
+      document.querySelectorAll("[data-task]").forEach((node) => {
+        node.addEventListener("click", () => {
+          const task = tasks[Number(node.dataset.task)];
+          const route = task[0].includes("DCA") ? "portfolio" : task[0].includes("Life") ? "life" : task[0].includes("Report") ? "document" : task[0].includes("Client") || task[0].includes("Follow") || task[0].includes("Proposal") ? "follow" : "chief";
+          selectAgent(route);
+          commandText.value = `Handle task: ${task[0]} at ${task[1]}. Status: ${task[3]}.`;
+        });
+      });
 
       updateClock();
       setInterval(updateClock, 30000);
+      selectAgent("chief");
     </script>
   </body>
 </html>
