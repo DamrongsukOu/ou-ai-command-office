@@ -377,12 +377,9 @@
       .agent-card {
         position: absolute;
         z-index: 3;
-        display: grid;
-        grid-template-columns: 42px 1fr;
-        gap: 9px;
         width: 220px;
         min-height: 72px;
-        padding: 9px 10px;
+        padding: 11px 10px 10px 72px;
         border: 1px solid rgba(255, 209, 95, 0.32);
         border-radius: 8px;
         color: #eaf8ff;
@@ -396,24 +393,6 @@
         box-shadow: 0 0 0 2px rgba(255, 209, 95, 0.18), 0 18px 42px rgba(0,0,0,0.44);
       }
 
-      .mini-avatar {
-        width: 42px;
-        height: 48px;
-        align-self: center;
-        border-radius: 12px 12px 8px 8px;
-        background:
-          radial-gradient(circle at 50% 30%, #efbd86 0 26%, transparent 27%),
-          linear-gradient(180deg, #1c375d 34%, #12406b 35%);
-        border: 1px solid rgba(88, 217, 255, 0.32);
-      }
-
-      .mini-avatar.robot {
-        background:
-          radial-gradient(circle at 37% 25%, #071221 0 3px, transparent 4px),
-          radial-gradient(circle at 63% 25%, #071221 0 3px, transparent 4px),
-          linear-gradient(180deg, #dffbff, #55cfe8);
-      }
-
       .agent-card strong {
         display: block;
         color: var(--gold);
@@ -421,7 +400,11 @@
         text-transform: uppercase;
       }
 
-      .agent-card span {
+      .agent-copy {
+        display: block;
+      }
+
+      .agent-copy > span {
         display: block;
         margin-top: 3px;
         color: #b9c9d7;
@@ -439,6 +422,206 @@
         text-transform: uppercase;
       }
 
+      .character {
+        position: absolute;
+        left: 12px;
+        bottom: 9px;
+        width: 52px;
+        height: 68px;
+        filter: drop-shadow(0 8px 12px rgba(0,0,0,0.42));
+      }
+
+      .character::before {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 4px;
+        width: 36px;
+        height: 34px;
+        border-radius: 18px 18px 12px 12px;
+        background: var(--hair, #17243a);
+      }
+
+      .face {
+        position: absolute;
+        left: 12px;
+        top: 13px;
+        width: 28px;
+        height: 28px;
+        border: 2px solid rgba(255,255,255,0.72);
+        border-radius: 50%;
+        background: var(--skin, #efbd86);
+        z-index: 2;
+      }
+
+      .face::before,
+      .face::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #071221;
+      }
+
+      .face::before { left: 6px; }
+      .face::after { right: 6px; }
+
+      .body {
+        position: absolute;
+        left: 9px;
+        bottom: 0;
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(88,217,255,0.35);
+        border-radius: 10px 10px 5px 5px;
+        background:
+          linear-gradient(90deg, transparent 45%, rgba(255,255,255,0.48) 46% 53%, transparent 54%),
+          linear-gradient(180deg, var(--suit-a, #1d4d80), var(--suit-b, #102b49));
+        z-index: 1;
+      }
+
+      .headset,
+      .glasses,
+      .tablet,
+      .spark,
+      .shield,
+      .doc-icon,
+      .memory-core {
+        position: absolute;
+        z-index: 4;
+        pointer-events: none;
+      }
+
+      .headset {
+        left: 8px;
+        top: 18px;
+        width: 36px;
+        height: 20px;
+        border: 2px solid var(--cyan);
+        border-bottom: 0;
+        border-radius: 18px 18px 0 0;
+      }
+
+      .headset::after {
+        content: "";
+        position: absolute;
+        right: -4px;
+        bottom: -8px;
+        width: 12px;
+        height: 3px;
+        border-radius: 99px;
+        background: var(--cyan);
+      }
+
+      .glasses {
+        left: 14px;
+        top: 24px;
+        width: 24px;
+        height: 8px;
+        border-left: 7px solid rgba(7,18,31,0.78);
+        border-right: 7px solid rgba(7,18,31,0.78);
+      }
+
+      .glasses::before {
+        content: "";
+        position: absolute;
+        left: 7px;
+        top: 3px;
+        width: 10px;
+        height: 2px;
+        background: rgba(7,18,31,0.78);
+      }
+
+      .tablet {
+        right: 0;
+        bottom: 13px;
+        width: 18px;
+        height: 24px;
+        border: 1px solid var(--cyan);
+        border-radius: 3px;
+        background: rgba(32,220,255,0.16);
+      }
+
+      .spark {
+        right: -1px;
+        top: 8px;
+        width: 16px;
+        height: 16px;
+        color: var(--gold);
+        background: currentColor;
+        clip-path: polygon(50% 0, 61% 38%, 100% 50%, 61% 62%, 50% 100%, 39% 62%, 0 50%, 39% 38%);
+      }
+
+      .shield {
+        right: 1px;
+        bottom: 10px;
+        width: 18px;
+        height: 22px;
+        background: var(--green);
+        clip-path: polygon(50% 0, 100% 18%, 86% 78%, 50% 100%, 14% 78%, 0 18%);
+      }
+
+      .doc-icon {
+        right: 0;
+        bottom: 12px;
+        width: 18px;
+        height: 24px;
+        border: 1px solid #fff0b6;
+        border-radius: 3px;
+        background: rgba(255,209,95,0.16);
+      }
+
+      .doc-icon::before {
+        content: "";
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        top: 7px;
+        height: 2px;
+        background: #fff0b6;
+        box-shadow: 0 5px 0 #fff0b6;
+      }
+
+      .memory-core {
+        right: 0;
+        bottom: 14px;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--cyan);
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--green) 0 24%, rgba(32,220,255,0.18) 25%);
+      }
+
+      .robot-char::before { display: none; }
+      .robot-char .face {
+        left: 8px;
+        top: 6px;
+        width: 36px;
+        height: 32px;
+        border-radius: 11px;
+        background: #dffbff;
+        border-color: rgba(32,220,255,0.8);
+      }
+      .robot-char .face::before,
+      .robot-char .face::after {
+        top: 11px;
+        background: #061221;
+      }
+      .robot-char .body {
+        background: linear-gradient(180deg, #dffbff, #58d6ee);
+        border-color: rgba(32,220,255,0.8);
+      }
+
+      .sales-char { --hair: #111827; --suit-a: #1b5b88; --suit-b: #102c49; }
+      .follow-char { --hair: #242033; --suit-a: #233f74; --suit-b: #11284f; }
+      .portfolio-char { --hair: #171a24; --suit-a: #1b725f; --suit-b: #0e3b36; }
+      .risk-char { --hair: #1f2634; --suit-a: #31446c; --suit-b: #182642; }
+      .product-char { --hair: #18203b; --suit-a: #304f89; --suit-b: #172b55; }
+      .document-char { --hair: #151c25; --suit-a: #7a5b1e; --suit-b: #3d2b13; }
+      .life-char { --hair: #21172b; --suit-a: #7c2d73; --suit-b: #3d1644; }
+
       .asm { left: 15%; top: 42%; }
       .follow { left: 4%; top: 66%; }
       .portfolio { right: 13%; top: 42%; }
@@ -452,10 +635,15 @@
         top: 35%;
         width: 170px;
         transform: translateX(-50%);
-        grid-template-columns: 1fr;
+        padding: 72px 10px 10px;
         text-align: center;
       }
-      .chief .mini-avatar { margin: 0 auto; }
+      .chief .character {
+        left: 50%;
+        top: -8px;
+        bottom: auto;
+        transform: translateX(-50%);
+      }
 
       .right-panel {
         display: grid;
@@ -590,7 +778,7 @@
           grid-template-columns: 36px 1fr;
           padding: 8px;
         }
-        .agent-card span { display: none; }
+        .agent-copy > span { display: none; }
         .memory { width: 220px; left: 34%; }
         .status-strip { grid-template-columns: 1fr; }
       }
@@ -659,40 +847,40 @@
             <div class="room-label life">Life Room</div>
 
             <button class="agent-card chief active" data-agent="chief">
-              <span class="mini-avatar robot"></span>
-              <span><strong>Chief of Staff</strong><span>Daily command, priority routing</span><small><span class="dot"></span> Online</small></span>
+              <span class="character robot-char"><span class="face"></span><span class="body"></span><span class="memory-core"></span></span>
+              <span class="agent-copy"><strong>Chief of Staff</strong><span>Daily command, priority routing</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card asm" data-agent="asm">
-              <span class="mini-avatar"></span>
-              <span><strong>ASM Sales Agent</strong><span>ProXES Sales Lead</span><small><span class="dot"></span> Online</small></span>
+              <span class="character sales-char"><span class="face"></span><span class="body"></span><span class="headset"></span></span>
+              <span class="agent-copy"><strong>ASM Sales Agent</strong><span>ProXES Sales Lead</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card follow" data-agent="follow">
-              <span class="mini-avatar"></span>
-              <span><strong>Customer Follow-up</strong><span>Follow-up & Relationship</span><small><span class="dot"></span> Online</small></span>
+              <span class="character follow-char"><span class="face"></span><span class="body"></span><span class="headset"></span><span class="tablet"></span></span>
+              <span class="agent-copy"><strong>Customer Follow-up</strong><span>Follow-up & Relationship</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card portfolio" data-agent="portfolio">
-              <span class="mini-avatar"></span>
-              <span><strong>Portfolio Agent</strong><span>DCA & Allocation</span><small><span class="dot"></span> Online</small></span>
+              <span class="character portfolio-char"><span class="face"></span><span class="body"></span><span class="glasses"></span></span>
+              <span class="agent-copy"><strong>Portfolio Agent</strong><span>DCA & Allocation</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card risk" data-agent="risk">
-              <span class="mini-avatar"></span>
-              <span><strong>Risk Manager</strong><span>Risk & Protection</span><small><span class="dot"></span> Online</small></span>
+              <span class="character risk-char"><span class="face"></span><span class="body"></span><span class="glasses"></span><span class="shield"></span></span>
+              <span class="agent-copy"><strong>Risk Manager</strong><span>Risk & Protection</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card product" data-agent="product">
-              <span class="mini-avatar"></span>
-              <span><strong>Product Knowledge</strong><span>Solutions & Technical</span><small><span class="dot"></span> Online</small></span>
+              <span class="character product-char"><span class="face"></span><span class="body"></span><span class="tablet"></span></span>
+              <span class="agent-copy"><strong>Product Knowledge</strong><span>Solutions & Technical</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card document" data-agent="document">
-              <span class="mini-avatar"></span>
-              <span><strong>Document Studio</strong><span>Create • Check • Design</span><small><span class="dot"></span> Online</small></span>
+              <span class="character document-char"><span class="face"></span><span class="body"></span><span class="doc-icon"></span></span>
+              <span class="agent-copy"><strong>Document Studio</strong><span>Create • Check • Design</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card life" data-agent="life">
-              <span class="mini-avatar"></span>
-              <span><strong>Life Room</strong><span>Family, timing, balance</span><small><span class="dot"></span> Online</small></span>
+              <span class="character life-char"><span class="face"></span><span class="body"></span><span class="spark"></span></span>
+              <span class="agent-copy"><strong>Life Room</strong><span>Family, timing, balance</span><small><span class="dot"></span> Online</small></span>
             </button>
             <button class="agent-card memory" data-agent="memory">
-              <span class="mini-avatar robot"></span>
-              <span><strong>Memory Steward</strong><span>Data Vault & Long-term Memory</span><small><span class="dot"></span> Online</small></span>
+              <span class="character robot-char"><span class="face"></span><span class="body"></span><span class="memory-core"></span></span>
+              <span class="agent-copy"><strong>Memory Steward</strong><span>Data Vault & Long-term Memory</span><small><span class="dot"></span> Online</small></span>
             </button>
           </div>
         </section>
