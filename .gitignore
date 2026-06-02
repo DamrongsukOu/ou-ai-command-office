@@ -1,0 +1,7 @@
+private_context/
+.env
+*.local
+secrets.json
+real_customer_data/
+real_portfolio_export/
+

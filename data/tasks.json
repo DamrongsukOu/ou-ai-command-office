@@ -1,0 +1,30 @@
+[
+  {
+    "id": "task_001",
+    "title": "Prepare Morning Engine",
+    "agent": "Chief of Staff Agent",
+    "status": "pending",
+    "priority": "high",
+    "due_date": "2026-06-02",
+    "output_type": "daily_brief"
+  },
+  {
+    "id": "task_002",
+    "title": "Prepare customer follow-up",
+    "agent": "Customer Follow-up Agent",
+    "status": "in_progress",
+    "priority": "high",
+    "due_date": "2026-06-02",
+    "output_type": "email_draft"
+  },
+  {
+    "id": "task_003",
+    "title": "Mock Portfolio DCA decision",
+    "agent": "Portfolio Agent",
+    "status": "waiting",
+    "priority": "medium",
+    "due_date": "2026-06-02",
+    "output_type": "dca_recommendation"
+  }
+]
+

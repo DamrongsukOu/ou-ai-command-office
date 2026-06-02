@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ou AI Command Office</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Personal Agent Office</p>
+        <h1>Ou AI Command Office</h1>
+      </div>
+      <div class="status-strip">
+        <span class="status online">mock data</span>
+        <span class="status online">5 rooms</span>
+        <span class="status">static MVP v1</span>
+      </div>
+    </header>
+
+    <main class="shell">
+      <aside class="panel command-panel">
+        <h2>Command</h2>
+        <label for="agentSelect">Agent</label>
+        <select id="agentSelect"></select>
+        <label for="commandInput">Instruction</label>
+        <textarea id="commandInput" rows="8">Prepare Morning Engine for today.</textarea>
+        <div class="mode-row">
+          <button class="mode active" data-mode="one-shot">One-shot</button>
+          <button class="mode" data-mode="monitor">Monitor</button>
+        </div>
+        <button id="sendCommand" class="primary">Send Command</button>
+        <div class="quick-actions">
+          <button data-prompt="morning_engine">Morning Engine</button>
+          <button data-prompt="sales_follow_up">Sales Follow-up</button>
+          <button data-prompt="portfolio_dca">DCA Today</button>
+          <button data-prompt="document_review">Document Review</button>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <section class="hero-card">
+          <div>
+            <p class="eyebrow">Command Room</p>
+            <h2>Daily operating system for Sales, Portfolio, Documents, and Life.</h2>
+          </div>
+          <div class="metrics">
+            <span><strong id="agentCount">0</strong> agents</span>
+            <span><strong id="taskCount">0</strong> tasks</span>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-title">
+            <h2>Agent Rooms</h2>
+            <span>Click an agent to load prompt context</span>
+          </div>
+          <div id="agentGrid" class="agent-grid"></div>
+        </section>
+
+        <section>
+          <div class="section-title">
+            <h2>Latest Output</h2>
+            <span>Mock result generated locally</span>
+          </div>
+          <article id="outputCard" class="output-card">
+            <h3>Ready</h3>
+            <p>Select an action or send a command to generate a mock output.</p>
+          </article>
+        </section>
+      </section>
+
+      <aside class="panel activity-panel">
+        <h2>Task Queue</h2>
+        <div id="taskList" class="task-list"></div>
+        <h2>Recent Results</h2>
+        <div id="resultList" class="result-list"></div>
+        <h2>Privacy</h2>
+        <p class="privacy-note">Private context is ignored by git and must not be displayed here with real data.</p>
+      </aside>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+

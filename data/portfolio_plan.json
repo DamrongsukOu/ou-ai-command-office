@@ -1,0 +1,26 @@
+{
+  "strategy": "buy-only DCA",
+  "asset_limit": 10,
+  "source_of_truth": {
+    "allocation": "portfolio dashboard or latest portfolio_plan.json",
+    "timing": "fresh live market data only"
+  },
+  "rules": {
+    "do_not_use_memory_as_current_portfolio_truth": true,
+    "refresh_live_market_data_every_time": true,
+    "allow_hold_cash": true
+  },
+  "required_fields_for_real_plan": [
+    "asset_list",
+    "target_allocation",
+    "portfolio_mode",
+    "buy_only_rule",
+    "dca_budget_rule",
+    "max_asset_count",
+    "risk_constraints",
+    "whole_share_constraints",
+    "excluded_assets",
+    "review_frequency"
+  ]
+}
+

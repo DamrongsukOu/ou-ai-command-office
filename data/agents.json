@@ -1,0 +1,57 @@
+[
+  {
+    "id": "chief_of_staff",
+    "name": "Chief of Staff Agent",
+    "room": "Command Room",
+    "status": "online",
+    "role": "Prioritize tasks, route work, summarize action plans",
+    "main_tasks": ["Daily brief", "Task routing", "Quality gate"],
+    "prompt_file": "prompts/chief_of_staff.md"
+  },
+  {
+    "id": "asm_sales",
+    "name": "ASM Sales Agent",
+    "room": "Sales Room",
+    "status": "online",
+    "role": "Prepare ProXES sales briefs, opportunity summaries, and weekly sales support",
+    "main_tasks": ["Visit brief", "Opportunity analysis", "Weekly report"],
+    "prompt_file": "prompts/asm_sales.md"
+  },
+  {
+    "id": "customer_follow_up",
+    "name": "Customer Follow-up Agent",
+    "room": "Sales Room",
+    "status": "online",
+    "role": "Prepare follow-up queue, email drafts, and Salesforce update drafts",
+    "main_tasks": ["Follow-up email", "Next action", "CRM draft"],
+    "prompt_file": "prompts/customer_follow_up.md"
+  },
+  {
+    "id": "portfolio",
+    "name": "Portfolio Agent",
+    "room": "Portfolio Room",
+    "status": "mock-only",
+    "role": "Analyze allocation, DCA candidates, risk, and buy/wait/cash decisions",
+    "main_tasks": ["DCA decision", "Allocation gap", "Risk note"],
+    "prompt_file": "prompts/portfolio_agent.md"
+  },
+  {
+    "id": "document_studio",
+    "name": "Document Studio Agent",
+    "room": "Document Studio",
+    "status": "online",
+    "role": "Prepare PDF, Excel, PPT, infographic, and document review outputs",
+    "main_tasks": ["PDF", "Excel", "Quality check"],
+    "prompt_file": "prompts/document_studio.md"
+  },
+  {
+    "id": "life_astrology",
+    "name": "Life & Astrology Agent",
+    "room": "Life Room",
+    "status": "private-safe",
+    "role": "Support life planning, reminders, family planning, and astrology lens",
+    "main_tasks": ["Daily reading", "Timing", "Practical action"],
+    "prompt_file": "prompts/life_astrology.md"
+  }
+]
+

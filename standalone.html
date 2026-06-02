@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ou AI Command Office - Standalone</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --wall: #0c2034;
+        --floor: #10243a;
+        --panel: rgba(10, 24, 40, 0.86);
+        --panel-2: rgba(15, 35, 57, 0.94);
+        --line: rgba(98, 224, 255, 0.22);
+        --text: #eef8ff;
+        --muted: #9bb3c7;
+        --cyan: #2de2ff;
+        --green: #5ee6a8;
+        --gold: #ffc76b;
+        --red: #ff7b8a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family: "Segoe UI", Arial, sans-serif;
+        background:
+          radial-gradient(circle at 14% 8%, rgba(45, 226, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 86% 18%, rgba(94, 230, 168, 0.12), transparent 24%),
+          linear-gradient(135deg, #07111f 0%, #0c1b2d 54%, #07111f 100%);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      button,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(4, 12, 22, 0.9);
+      }
+
+      .eyebrow {
+        color: var(--cyan);
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .status-strip {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .status {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 7px 10px;
+        color: var(--green);
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 12px;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr) 320px;
+        gap: 16px;
+        padding: 16px;
+      }
+
+      .panel,
+      .office-stage,
+      .task,
+      .output {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      label {
+        display: block;
+        color: var(--muted);
+        margin: 16px 0 6px;
+        font-size: 13px;
+      }
+
+      select,
+      textarea,
+      button {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(2, 8, 16, 0.78);
+        color: var(--text);
+        padding: 10px;
+      }
+
+      button {
+        cursor: pointer;
+        margin-top: 8px;
+      }
+
+      button:hover,
+      .agent:hover {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 2px rgba(45, 226, 255, 0.13);
+      }
+
+      .primary {
+        background: var(--cyan);
+        border-color: var(--cyan);
+        color: #03131b;
+        font-weight: 700;
+      }
+
+      .workspace {
+        display: grid;
+        gap: 16px;
+      }
+
+      .office-stage {
+        position: relative;
+        min-height: 650px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(4, 12, 22, 0.9) 0 18%, transparent 18%),
+          repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 90px),
+          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 80px),
+          linear-gradient(150deg, var(--wall) 0%, var(--floor) 62%, #07111f 100%);
+      }
+
+      .office-header {
+        position: absolute;
+        top: 18px;
+        left: 22px;
+        right: 22px;
+        z-index: 4;
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .office-header h2 {
+        font-size: 28px;
+        line-height: 1.15;
+        max-width: 620px;
+      }
+
+      .office-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .office-chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 7px 9px;
+        color: var(--green);
+        background: rgba(8, 19, 31, 0.8);
+        font-size: 12px;
+      }
+
+      .back-wall {
+        position: absolute;
+        top: 105px;
+        left: 26px;
+        right: 26px;
+        height: 170px;
+        border: 1px solid rgba(98, 224, 255, 0.12);
+        border-radius: 8px;
+        background: rgba(4, 12, 22, 0.42);
+      }
+
+      .window {
+        position: absolute;
+        top: 22px;
+        left: 22px;
+        width: 210px;
+        height: 110px;
+        border: 1px solid var(--line);
+        background:
+          radial-gradient(circle at 30% 35%, rgba(45, 226, 255, 0.3), transparent 5%),
+          radial-gradient(circle at 70% 62%, rgba(45, 226, 255, 0.22), transparent 4%),
+          linear-gradient(135deg, #06111f, #0c2742);
+      }
+
+      .window::before,
+      .window::after {
+        content: "";
+        position: absolute;
+        background: rgba(98, 224, 255, 0.2);
+      }
+
+      .window::before {
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+      }
+
+      .window::after {
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 1px;
+      }
+
+      .screen-wall {
+        position: absolute;
+        top: 24px;
+        left: 275px;
+        right: 270px;
+        height: 112px;
+        border: 1px solid rgba(45, 226, 255, 0.24);
+        border-radius: 6px;
+        background: rgba(3, 18, 28, 0.88);
+        display: grid;
+        grid-template-columns: 1.3fr 1fr 0.8fr;
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .screen {
+        border: 1px solid rgba(45, 226, 255, 0.24);
+        border-radius: 5px;
+        background:
+          linear-gradient(90deg, transparent 0 30%, rgba(45, 226, 255, 0.18) 30% 31%, transparent 31%),
+          linear-gradient(180deg, rgba(45, 226, 255, 0.08), rgba(94, 230, 168, 0.06));
+      }
+
+      .server-rack {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 205px;
+        height: 126px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .rack {
+        border: 1px solid rgba(45, 226, 255, 0.18);
+        border-radius: 6px;
+        background: rgba(2, 8, 16, 0.86);
+        padding: 8px 6px;
+      }
+
+      .rack span {
+        display: block;
+        height: 9px;
+        margin-bottom: 8px;
+        border-radius: 999px;
+        background: rgba(45, 226, 255, 0.28);
+        box-shadow: 0 0 14px rgba(45, 226, 255, 0.2);
+      }
+
+      .floor-zone {
+        position: absolute;
+        border: 1px solid rgba(98, 224, 255, 0.12);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.025);
+      }
+
+      .zone-command { left: 34%; top: 310px; width: 32%; height: 215px; }
+      .zone-sales { left: 5%; top: 310px; width: 28%; height: 220px; }
+      .zone-portfolio { right: 5%; top: 310px; width: 28%; height: 220px; }
+      .zone-doc { left: 10%; bottom: 28px; width: 35%; height: 118px; }
+      .zone-life { right: 10%; bottom: 28px; width: 35%; height: 118px; }
+
+      .zone-label {
+        position: absolute;
+        top: 8px;
+        left: 10px;
+        color: rgba(238, 248, 255, 0.62);
+        font-size: 12px;
+      }
+
+      .conference-table {
+        position: absolute;
+        left: 37%;
+        top: 370px;
+        width: 26%;
+        height: 84px;
+        border: 1px solid rgba(98, 224, 255, 0.26);
+        border-radius: 18px;
+        background:
+          linear-gradient(90deg, rgba(45, 226, 255, 0.14), rgba(94, 230, 168, 0.08)),
+          rgba(9, 25, 41, 0.92);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+      }
+
+      .conference-table::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 54px;
+        height: 18px;
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(45, 226, 255, 0.26);
+        border-radius: 5px;
+        background: rgba(45, 226, 255, 0.16);
+      }
+
+      .desk {
+        position: absolute;
+        width: 106px;
+        height: 42px;
+        border: 1px solid rgba(98, 224, 255, 0.16);
+        border-radius: 8px;
+        background: rgba(14, 38, 60, 0.88);
+      }
+
+      .desk::before {
+        content: "";
+        position: absolute;
+        left: 14px;
+        top: -20px;
+        width: 58px;
+        height: 16px;
+        border: 1px solid rgba(45, 226, 255, 0.24);
+        border-radius: 4px;
+        background: rgba(45, 226, 255, 0.12);
+      }
+
+      .desk.sales { left: 9%; top: 392px; }
+      .desk.follow { left: 21%; top: 420px; }
+      .desk.portfolio { right: 20%; top: 392px; }
+      .desk.risk { right: 8%; top: 420px; }
+      .desk.doc { left: 14%; bottom: 58px; }
+      .desk.life { right: 17%; bottom: 58px; }
+
+      .agent {
+        position: absolute;
+        z-index: 5;
+        width: 132px;
+        border: 1px solid rgba(98, 224, 255, 0.2);
+        border-radius: 8px;
+        padding: 8px;
+        background: rgba(5, 16, 27, 0.88);
+        cursor: pointer;
+        transition: transform 160ms ease, border-color 160ms ease;
+      }
+
+      .agent:hover {
+        transform: translateY(-2px);
+      }
+
+      .avatar {
+        position: relative;
+        width: 42px;
+        height: 48px;
+        margin: 0 auto 7px;
+      }
+
+      .head {
+        width: 28px;
+        height: 28px;
+        margin: 0 auto;
+        border: 2px solid rgba(238, 248, 255, 0.9);
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--cyan), var(--green));
+      }
+
+      .body {
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        bottom: 0;
+        height: 24px;
+        border-radius: 8px 8px 4px 4px;
+        background: rgba(45, 226, 255, 0.22);
+      }
+
+      .agent h3 {
+        font-size: 12px;
+        text-align: center;
+        line-height: 1.25;
+      }
+
+      .agent p {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+        text-align: center;
+      }
+
+      .agent.command { left: 43%; top: 302px; }
+      .agent.sales { left: 7%; top: 304px; }
+      .agent.follow { left: 21%; top: 332px; }
+      .agent.product { left: 13%; top: 452px; }
+      .agent.portfolio { right: 21%; top: 304px; }
+      .agent.risk { right: 7%; top: 332px; }
+      .agent.document { left: 26%; bottom: 90px; }
+      .agent.linkedin { left: 11%; bottom: 62px; }
+      .agent.life { right: 26%; bottom: 90px; }
+      .agent.memory { right: 11%; bottom: 62px; }
+
+      .output,
+      .task {
+        padding: 12px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .output p,
+      .task p,
+      .note {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .gold { color: var(--gold); }
+
+      @media (max-width: 1180px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .office-stage {
+          min-height: 780px;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .topbar,
+        .office-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .shell {
+          padding: 10px;
+        }
+
+        .office-stage {
+          min-height: auto;
+          padding: 18px;
+        }
+
+        .back-wall,
+        .floor-zone,
+        .conference-table,
+        .desk {
+          display: none;
+        }
+
+        .office-header,
+        .agent {
+          position: static;
+        }
+
+        .office-header {
+          margin-bottom: 14px;
+        }
+
+        .agent {
+          width: 100%;
+          margin-top: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Standalone mode</p>
+        <h1>Ou AI Command Office</h1>
+      </div>
+      <div class="status-strip">
+        <span class="status">no server required</span>
+        <span class="status">office map</span>
+        <span class="status">mock data only</span>
+      </div>
+    </header>
+
+    <main class="shell">
+      <aside class="panel">
+        <h2>Command Desk</h2>
+        <label for="agent">Agent</label>
+        <select id="agent"></select>
+        <label for="command">Instruction</label>
+        <textarea id="command" rows="8">Prepare Morning Engine for today.</textarea>
+        <button class="primary" id="run">Send Command</button>
+        <button data-template="morning">Morning Engine</button>
+        <button data-template="sales">Sales Follow-up</button>
+        <button data-template="portfolio">DCA Today</button>
+        <button data-template="document">Document Review</button>
+      </aside>
+
+      <section class="workspace">
+        <section class="office-stage">
+          <div class="office-header">
+            <div>
+              <p class="eyebrow">Personal Agent Office</p>
+              <h2>Command office map for Ou's AI team.</h2>
+            </div>
+            <div class="office-chip-row">
+              <span class="office-chip">Command Room</span>
+              <span class="office-chip">Sales Room</span>
+              <span class="office-chip">Portfolio Room</span>
+              <span class="office-chip">Document Studio</span>
+              <span class="office-chip">Life Room</span>
+            </div>
+          </div>
+
+          <div class="back-wall">
+            <div class="window"></div>
+            <div class="screen-wall">
+              <div class="screen"></div>
+              <div class="screen"></div>
+              <div class="screen"></div>
+            </div>
+            <div class="server-rack">
+              <div class="rack"><span></span><span></span><span></span><span></span></div>
+              <div class="rack"><span></span><span></span><span></span><span></span></div>
+              <div class="rack"><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+
+          <div class="floor-zone zone-sales"><span class="zone-label">Sales Room</span></div>
+          <div class="floor-zone zone-command"><span class="zone-label">Command Room</span></div>
+          <div class="floor-zone zone-portfolio"><span class="zone-label">Portfolio Room</span></div>
+          <div class="floor-zone zone-doc"><span class="zone-label">Document Studio</span></div>
+          <div class="floor-zone zone-life"><span class="zone-label">Life Room</span></div>
+
+          <div class="conference-table"></div>
+          <div class="desk sales"></div>
+          <div class="desk follow"></div>
+          <div class="desk portfolio"></div>
+          <div class="desk risk"></div>
+          <div class="desk doc"></div>
+          <div class="desk life"></div>
+
+          <div id="officeAgents"></div>
+        </section>
+
+        <section class="panel output" id="output">
+          <h2>Ready</h2>
+          <p>Select an agent on the office map or send a command. This standalone file does not need a server.</p>
+        </section>
+      </section>
+
+      <aside class="panel">
+        <h2>Task Queue</h2>
+        <div id="tasks"></div>
+        <h2 style="margin-top:18px">Recent Output</h2>
+        <div class="task">
+          <strong>Morning Engine</strong>
+          <p>Top 3 priorities, must-win follow-up, Salesforce actions, and finish-before-6 PM plan.</p>
+        </div>
+        <h2 style="margin-top:18px">Privacy</h2>
+        <p class="note">Do not display real private_context data. Use placeholders only.</p>
+      </aside>
+    </main>
+
+    <script>
+      const agents = [
+        ["chief_of_staff", "Chief of Staff Agent", "Command Room", "Prioritize and route work", "command"],
+        ["asm_sales", "ASM Sales Agent", "Sales Room", "Visit brief and opportunity", "sales"],
+        ["customer_follow_up", "Customer Follow-up", "Sales Room", "Email and Salesforce draft", "follow"],
+        ["product", "Product Knowledge", "Sales Room", "Technology fit and FAQ", "product"],
+        ["portfolio", "Portfolio Agent", "Portfolio Room", "DCA and allocation", "portfolio"],
+        ["risk", "Risk Manager", "Portfolio Room", "Drawdown and concentration", "risk"],
+        ["document", "Document Studio", "Document Studio", "PDF, Excel, PPT", "document"],
+        ["linkedin", "LinkedIn & Email", "Document Studio", "Posts and business email", "linkedin"],
+        ["life", "Life & Astrology", "Life Room", "Planning lens and timing", "life"],
+        ["memory", "Memory Steward", "Data Vault", "Data hygiene and logs", "memory"]
+      ];
+
+      const tasks = [
+        ["Prepare Morning Engine", "Chief of Staff Agent", "high"],
+        ["Prepare customer follow-up", "Customer Follow-up", "high"],
+        ["Mock Portfolio DCA decision", "Portfolio Agent", "medium"]
+      ];
+
+      const templates = {
+        morning: "Summarize Morning Engine today: schedule, top 3 priorities, must-win follow-up, push/waiting items, Salesforce actions, risks, critical questions, time-blocked plan, finish-before-6 PM plan.",
+        sales: "Prepare customer follow-up: customer snapshot, last interaction, open item, recommended email, Salesforce update draft, next action, due date.",
+        portfolio: "Prepare Portfolio/DCA decision using allocation truth from dashboard and live market timing as refreshed data. Use mock data only in MVP.",
+        document: "Prepare document review: requirement summary, layout plan, quality check, revision notes, final output path placeholder."
+      };
+
+      const agentSelect = document.querySelector("#agent");
+      const officeAgents = document.querySelector("#officeAgents");
+      const taskList = document.querySelector("#tasks");
+
+      function chooseAgent(id) {
+        const selected = agents.find(([agentId]) => agentId === id);
+        agentSelect.value = id;
+        document.querySelector("#command").value = `Use ${selected[1]} for ${selected[3]}.`;
+        document.querySelector("#output").innerHTML = `
+          <h2>${selected[1]}</h2>
+          <p><strong>Room:</strong> ${selected[2]}</p>
+          <p><strong>Role:</strong> ${selected[3]}</p>
+          <p>Ready for a mock command. Private context is not loaded in standalone mode.</p>
+        `;
+      }
+
+      agents.forEach(([id, name, room, role, className]) => {
+        agentSelect.insertAdjacentHTML("beforeend", `<option value="${id}">${name}</option>`);
+        const node = document.createElement("button");
+        node.className = `agent ${className}`;
+        node.innerHTML = `
+          <div class="avatar"><div class="head"></div><div class="body"></div></div>
+          <h3>${name}</h3>
+          <p>${room}</p>
+        `;
+        node.addEventListener("click", () => chooseAgent(id));
+        officeAgents.appendChild(node);
+      });
+
+      tasks.forEach(([title, agent, priority]) => {
+        taskList.insertAdjacentHTML("beforeend", `<div class="task"><strong>${title}</strong><p>${agent} - <span class="gold">${priority}</span></p></div>`);
+      });
+
+      document.querySelectorAll("[data-template]").forEach((button) => {
+        button.addEventListener("click", () => document.querySelector("#command").value = templates[button.dataset.template]);
+      });
+
+      document.querySelector("#run").addEventListener("click", () => {
+        const selected = agents.find(([id]) => id === agentSelect.value);
+        document.querySelector("#output").innerHTML = `
+          <h2>${selected[1]}</h2>
+          <p><strong>Mock Output:</strong> ${document.querySelector("#command").value}</p>
+          <p>Quality Gate: context checked, action drafted, risk note required, private data not exposed.</p>
+        `;
+      });
+    </script>
+  </body>
+</html>
