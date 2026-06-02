@@ -376,7 +376,7 @@
 
       .office-shell {
         position: relative;
-        min-height: 760px;
+        min-height: 820px;
         overflow: hidden;
         background:
           linear-gradient(180deg, rgba(5, 13, 24, 0.72) 0 23%, transparent 23%),
@@ -859,15 +859,15 @@
 
       .agent.command { left: 44%; top: 301px; }
       .agent.sales { left: 11%; top: 336px; }
-      .agent.follow { left: 4.5%; top: 508px; }
-      .agent.product { left: 23%; bottom: 94px; }
+      .agent.follow { left: 3.5%; top: 540px; }
+      .agent.product { left: 12%; bottom: 158px; }
       .agent.portfolio { right: 18%; top: 336px; }
-      .agent.risk { right: 5%; top: 514px; }
-      .agent.document { right: 35%; bottom: 86px; }
-      .agent.life { right: 17%; bottom: 78px; }
+      .agent.risk { right: 3.5%; top: 540px; }
+      .agent.document { left: 37%; bottom: 166px; }
+      .agent.life { right: 13%; bottom: 158px; }
       .agent.memory {
-        left: 42%;
-        bottom: 16px;
+        left: calc(50% - 125px);
+        bottom: 92px;
         display: grid;
         grid-template-columns: 50px 1fr;
         width: 250px;
@@ -887,7 +887,7 @@
         position: absolute;
         left: 28px;
         right: 28px;
-        bottom: 18px;
+        bottom: 16px;
         display: grid;
         grid-template-columns: 1fr auto;
         gap: 12px;
@@ -1046,7 +1046,34 @@
         }
 
         .office-shell {
-          min-height: 780px;
+          min-height: 860px;
+        }
+
+        .agent {
+          width: 148px;
+          padding: 8px;
+        }
+
+        .agent h3 {
+          font-size: 12px;
+        }
+
+        .agent p {
+          font-size: 10px;
+        }
+
+        .agent.command { left: 39%; top: 304px; }
+        .agent.sales { left: 8%; top: 342px; }
+        .agent.follow { left: 4%; top: 548px; }
+        .agent.product { left: 16%; bottom: 176px; }
+        .agent.portfolio { right: 8%; top: 342px; }
+        .agent.risk { right: 4%; top: 548px; }
+        .agent.document { left: 39%; bottom: 190px; }
+        .agent.life { right: 18%; bottom: 176px; }
+        .agent.memory {
+          left: calc(50% - 118px);
+          bottom: 94px;
+          width: 236px;
         }
       }
 
