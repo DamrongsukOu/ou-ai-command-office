@@ -7,99 +7,82 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #06101d;
-        --bg-2: #0a1728;
-        --panel: rgba(8, 20, 34, 0.94);
-        --panel-2: rgba(12, 31, 52, 0.92);
-        --line: rgba(91, 218, 255, 0.24);
-        --line-strong: rgba(91, 218, 255, 0.58);
-        --text: #edf8ff;
-        --muted: #96afc3;
-        --cyan: #25dfff;
-        --green: #55e8a9;
-        --gold: #ffd36b;
-        --magenta: #ff7ee6;
-        --purple: #a98cff;
-        --danger: #ff7588;
-        --shadow: 0 22px 65px rgba(0, 0, 0, 0.38);
+        --bg: #050b14;
+        --panel: rgba(7, 18, 31, 0.92);
+        --panel-2: rgba(10, 28, 47, 0.94);
+        --line: rgba(88, 217, 255, 0.24);
+        --line-strong: rgba(88, 217, 255, 0.52);
+        --text: #eef8ff;
+        --muted: #91a9bf;
+        --cyan: #20dcff;
+        --green: #4de5a6;
+        --gold: #ffd15f;
+        --purple: #9c7cff;
+        --pink: #ff6fb5;
+        --red: #ff6f83;
+        --blue: #2e7cff;
+        --shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        background: var(--bg);
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
         min-height: 100vh;
         color: var(--text);
         font-family: "Segoe UI", "Noto Sans Thai", Arial, sans-serif;
-        letter-spacing: 0;
         background:
-          linear-gradient(180deg, rgba(5, 13, 24, 0.72), rgba(6, 16, 29, 0.96)),
-          radial-gradient(circle at 24% 10%, rgba(37, 223, 255, 0.18), transparent 30%),
-          radial-gradient(circle at 82% 20%, rgba(85, 232, 169, 0.12), transparent 26%),
-          #06101d;
+          radial-gradient(circle at 18% 0%, rgba(32, 220, 255, 0.18), transparent 28%),
+          radial-gradient(circle at 88% 10%, rgba(77, 229, 166, 0.11), transparent 24%),
+          linear-gradient(180deg, #040914, #081321 58%, #050b14);
       }
 
-      h1,
-      h2,
-      h3,
-      p {
-        margin: 0;
-      }
+      h1, h2, h3, p { margin: 0; }
+      button, textarea, select { font: inherit; }
 
-      button,
-      select,
-      textarea {
-        font: inherit;
-      }
-
-      .app {
+      .page {
         min-height: 100vh;
+        padding: 12px 16px 10px;
         display: grid;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: 10px;
       }
 
       .topbar {
         display: grid;
-        grid-template-columns: 1fr auto auto;
+        grid-template-columns: minmax(250px, 1fr) auto 250px;
+        gap: 12px;
         align-items: center;
-        gap: 18px;
-        padding: 10px 16px;
-        border-bottom: 1px solid var(--line);
-        background: rgba(3, 10, 19, 0.92);
       }
 
       .brand h1 {
-        font-size: 22px;
-        line-height: 1.1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: clamp(20px, 1.8vw, 30px);
+        line-height: 1.05;
+        letter-spacing: 0.02em;
         text-transform: uppercase;
       }
 
-      .brand p,
-      .system-card small,
-      .task small,
-      .recent small {
-        color: var(--muted);
-        font-size: 12px;
+      .brand p {
+        margin-top: 8px;
+        color: #b9c8d7;
+        font-size: 14px;
       }
 
-      .live {
+      .badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        margin-left: 10px;
-        padding: 6px 10px;
-        border: 1px solid rgba(85, 232, 169, 0.42);
-        border-radius: 6px;
+        padding: 7px 11px;
+        border: 1px solid rgba(77, 229, 166, 0.38);
+        border-radius: 7px;
         color: var(--green);
-        background: rgba(85, 232, 169, 0.08);
+        background: rgba(77, 229, 166, 0.08);
         font-size: 12px;
-        vertical-align: middle;
+        font-weight: 800;
+        white-space: nowrap;
       }
 
       .dot {
@@ -107,897 +90,450 @@
         height: 7px;
         border-radius: 50%;
         background: currentColor;
-        box-shadow: 0 0 16px currentColor;
+        box-shadow: 0 0 15px currentColor;
       }
 
-      .status-board {
+      .status-strip {
         display: grid;
-        grid-template-columns: repeat(4, minmax(116px, auto));
+        grid-template-columns: repeat(4, auto);
         gap: 1px;
         overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 8px;
         background: var(--line);
+        box-shadow: var(--shadow);
       }
 
-      .system-card {
-        min-height: 50px;
-        padding: 8px 13px;
-        background: rgba(9, 24, 41, 0.96);
+      .status-item {
+        min-width: 132px;
+        padding: 9px 14px;
+        background: rgba(8, 22, 38, 0.96);
       }
 
-      .system-card strong {
+      .status-item small {
         display: block;
-        margin-top: 3px;
-        color: var(--text);
-        font-size: 15px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
       }
 
-      .profile {
-        display: flex;
+      .status-item strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 18px;
+      }
+
+      .status-item strong.ok {
+        color: var(--green);
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      .user-card {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 11px;
         align-items: center;
-        gap: 10px;
-        min-width: 170px;
-        padding: 8px 10px;
+        padding: 9px 12px;
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: rgba(12, 31, 52, 0.84);
+        background: linear-gradient(135deg, rgba(16, 45, 75, 0.95), rgba(9, 26, 44, 0.96));
+        box-shadow: var(--shadow);
       }
 
-      .profile-avatar {
-        width: 38px;
-        height: 38px;
+      .user-avatar {
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.72);
+        border: 2px solid rgba(255,255,255,0.65);
         background:
-          radial-gradient(circle at 50% 38%, #f1c28b 0 31%, transparent 32%),
-          linear-gradient(135deg, #1c3757, #25dfff);
+          radial-gradient(circle at 50% 38%, #efbd86 0 29%, transparent 30%),
+          radial-gradient(circle at 34% 31%, #172236 0 23%, transparent 24%),
+          radial-gradient(circle at 66% 31%, #172236 0 23%, transparent 24%),
+          linear-gradient(135deg, #14243e, #20dcff);
       }
 
-      .layout {
+      .user-card strong { display: block; font-size: 13px; }
+      .user-card span { color: var(--muted); font-size: 12px; line-height: 1.35; }
+
+      .main {
+        min-height: 0;
         display: grid;
-        grid-template-columns: 270px minmax(720px, 1fr) 300px;
-        gap: 8px;
-        padding: 8px 12px;
+        grid-template-columns: 292px minmax(0, 1fr) 306px;
+        gap: 9px;
       }
 
-      .side,
-      .right-panel,
-      .office-shell,
-      .footerbar {
+      .panel, .stage-wrap, .footer {
         border: 1px solid var(--line);
         border-radius: 8px;
         background: var(--panel);
         box-shadow: var(--shadow);
       }
 
-      .side,
-      .right-panel {
+      .panel {
+        min-height: 0;
         padding: 12px;
+        overflow: auto;
       }
 
-      .panel-title {
+      .panel-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        margin-bottom: 12px;
-        color: #dff7ff;
+        margin-bottom: 13px;
+        color: #e6f8ff;
         font-size: 13px;
-        letter-spacing: 0.03em;
+        font-weight: 900;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
       }
 
-      .panel-title::before {
-        content: "";
-        width: 9px;
-        height: 9px;
-        border-radius: 2px;
-        border: 1px solid var(--cyan);
-        background: rgba(37, 223, 255, 0.12);
-        box-shadow: 0 0 16px rgba(37, 223, 255, 0.3);
+      .panel-head span:first-child {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
       }
 
-      .command-box {
+      .panel-head span:first-child::before {
+        content: "";
+        width: 15px;
+        height: 15px;
+        border: 1px solid rgba(32, 220, 255, 0.42);
+        border-radius: 4px;
+        background: rgba(32, 220, 255, 0.1);
+        box-shadow: 0 0 16px rgba(32, 220, 255, 0.22);
+      }
+
+      .command-card {
         padding: 12px;
-        border: 1px solid rgba(91, 218, 255, 0.18);
+        border: 1px solid rgba(88, 217, 255, 0.18);
         border-radius: 8px;
-        background: rgba(2, 9, 18, 0.72);
+        background: rgba(4, 13, 25, 0.7);
       }
 
       label {
         display: block;
-        margin: 12px 0 6px;
-        color: #bad0df;
+        margin-bottom: 7px;
+        color: #e2edf5;
         font-size: 12px;
+        font-weight: 800;
       }
 
-      select,
-      textarea,
-      button {
+      .command-row {
+        display: grid;
+        grid-template-columns: 1fr 38px;
+        gap: 7px;
+      }
+
+      textarea, select, button {
         width: 100%;
-        border: 1px solid rgba(91, 218, 255, 0.24);
+        border: 1px solid rgba(88, 217, 255, 0.22);
         border-radius: 7px;
         color: var(--text);
-        background: rgba(8, 20, 34, 0.88);
-      }
-
-      select,
-      textarea {
-        padding: 10px;
+        background: rgba(9, 22, 38, 0.9);
       }
 
       textarea {
-        min-height: 86px;
+        min-height: 56px;
+        padding: 12px;
         resize: vertical;
       }
 
       button {
-        min-height: 40px;
-        padding: 9px 10px;
         cursor: pointer;
-        transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+        transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
       }
 
       button:hover {
         transform: translateY(-1px);
         border-color: var(--cyan);
-        box-shadow: 0 0 0 2px rgba(37, 223, 255, 0.12);
+        box-shadow: 0 0 0 2px rgba(32, 220, 255, 0.12);
       }
 
-      .primary {
-        margin-top: 10px;
-        border-color: rgba(85, 232, 169, 0.5);
-        color: #02131a;
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--cyan), var(--green));
-      }
-
-      .quick {
+      .send-btn {
         display: grid;
-        gap: 8px;
-        margin-top: 14px;
+        place-items: center;
+        min-height: 56px;
+        color: #dffaff;
+        font-size: 20px;
       }
 
-      .quick button,
-      .room-nav button {
-        display: grid;
-        grid-template-columns: 32px 1fr;
+      .section-label {
+        display: flex;
         align-items: center;
+        gap: 8px;
+        margin: 16px 0 9px;
+        color: #d8ecfa;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .actions, .rooms {
+        display: grid;
+        gap: 9px;
+      }
+
+      .action, .room {
+        display: grid;
+        grid-template-columns: 34px 1fr;
         gap: 10px;
-        min-height: 52px;
+        align-items: center;
+        min-height: 54px;
+        padding: 8px 10px;
         text-align: left;
       }
 
+      .action.gold { background: rgba(255, 209, 95, 0.10); }
+      .action.green, .room.green { background: rgba(77, 229, 166, 0.08); }
+      .action.purple { background: rgba(156, 124, 255, 0.12); }
+      .action.blue, .room.blue { background: rgba(46, 124, 255, 0.09); }
+      .action.pink, .room.pink { background: rgba(255, 111, 181, 0.09); }
+
       .icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 7px;
-        border: 1px solid rgba(91, 218, 255, 0.2);
-        background:
-          linear-gradient(135deg, rgba(37, 223, 255, 0.16), rgba(85, 232, 169, 0.08)),
-          rgba(8, 20, 34, 0.88);
-        position: relative;
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        color: var(--cyan);
+        background: rgba(32, 220, 255, 0.11);
+        font-size: 18px;
       }
 
-      .icon::before,
-      .icon::after {
-        content: "";
-        position: absolute;
-        background: currentColor;
-      }
-
-      .icon.bolt::before {
-        left: 12px;
-        top: 5px;
-        width: 8px;
-        height: 20px;
-        clip-path: polygon(48% 0, 100% 0, 64% 42%, 100% 42%, 28% 100%, 42% 55%, 0 55%);
-        color: var(--gold);
-      }
-
-      .icon.people::before {
-        left: 7px;
-        top: 9px;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        color: var(--green);
-        box-shadow: 10px 0 0 var(--green);
-      }
-
-      .icon.people::after {
-        left: 5px;
-        bottom: 7px;
-        width: 20px;
-        height: 8px;
-        border-radius: 8px 8px 3px 3px;
-        color: rgba(85, 232, 169, 0.85);
-      }
-
-      .icon.chart::before {
-        left: 7px;
-        bottom: 8px;
-        width: 4px;
-        height: 9px;
-        color: var(--purple);
-        box-shadow: 7px -4px 0 var(--green), 14px -10px 0 var(--cyan);
-      }
-
-      .icon.doc::before {
-        left: 8px;
-        top: 5px;
-        width: 15px;
-        height: 20px;
-        border: 1px solid currentColor;
-        border-radius: 3px;
-        background: transparent;
-        color: #dce9f4;
-      }
-
-      .icon.heart::before {
-        left: 9px;
-        top: 8px;
-        width: 14px;
-        height: 14px;
-        color: var(--magenta);
-        transform: rotate(45deg);
-        border-radius: 3px;
-      }
-
-      .quick strong,
-      .room-nav strong {
+      .action strong, .room strong {
         display: block;
         font-size: 12px;
       }
 
-      .quick span,
-      .room-nav span {
+      .action small, .room small {
         color: var(--muted);
         font-size: 11px;
-      }
-
-      .room-nav {
-        display: grid;
-        gap: 8px;
-        margin-top: 14px;
       }
 
       .quote {
         margin-top: 14px;
         padding: 12px;
-        border: 1px solid rgba(85, 232, 169, 0.26);
+        border: 1px solid rgba(77, 229, 166, 0.27);
         border-radius: 8px;
-        color: #bfe9db;
-        background: rgba(85, 232, 169, 0.07);
+        color: #c7eadc;
+        background: rgba(77, 229, 166, 0.06);
         font-size: 12px;
         line-height: 1.5;
       }
 
-      .office-shell {
+      .stage-wrap {
         position: relative;
-        min-height: 820px;
         overflow: hidden;
-        background:
-          linear-gradient(180deg, rgba(5, 13, 24, 0.72) 0 23%, transparent 23%),
-          #0a1728;
+        min-height: 640px;
       }
 
-      .office {
+      .stage {
         position: absolute;
         inset: 0;
         overflow: hidden;
-        background:
-          linear-gradient(180deg, rgba(9, 27, 47, 0.98) 0 27%, transparent 27%),
-          linear-gradient(150deg, rgba(10, 31, 52, 0.75) 0 45%, rgba(13, 35, 58, 0.95) 45% 100%);
+        background: #071221;
       }
 
-      .city-window {
+      .office-bg {
         position: absolute;
-        top: 72px;
-        width: 210px;
-        height: 190px;
-        border: 1px solid rgba(91, 218, 255, 0.22);
-        background:
-          linear-gradient(90deg, rgba(91, 218, 255, 0.18) 1px, transparent 1px) 0 0 / 42px 100%,
-          linear-gradient(180deg, rgba(91, 218, 255, 0.12) 1px, transparent 1px) 0 0 / 100% 38px,
-          radial-gradient(circle at 24% 64%, rgba(255, 211, 107, 0.75) 0 2px, transparent 3px),
-          radial-gradient(circle at 42% 38%, rgba(37, 223, 255, 0.85) 0 2px, transparent 3px),
-          radial-gradient(circle at 72% 70%, rgba(255, 126, 230, 0.68) 0 2px, transparent 3px),
-          linear-gradient(180deg, #07101d, #0b2b4e);
-        box-shadow: inset 0 0 28px rgba(37, 223, 255, 0.1);
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: saturate(1.12) contrast(1.05);
       }
 
-      .city-window.left {
-        left: 18px;
-        transform: skewY(-7deg);
-      }
-
-      .city-window.right {
-        right: 18px;
-        transform: skewY(7deg);
-      }
-
-      .command-wall {
+      .stage::after {
+        content: "";
         position: absolute;
-        top: 54px;
-        left: 28%;
-        right: 28%;
-        height: 205px;
-        border: 1px solid rgba(91, 218, 255, 0.46);
-        border-radius: 8px;
+        inset: 0;
+        pointer-events: none;
         background:
-          linear-gradient(90deg, rgba(37, 223, 255, 0.1), transparent 18%, transparent 82%, rgba(85, 232, 169, 0.08)),
-          rgba(2, 12, 22, 0.92);
-        box-shadow: 0 0 0 5px rgba(4, 13, 23, 0.64), 0 20px 55px rgba(0, 0, 0, 0.42);
+          linear-gradient(90deg, rgba(5, 11, 20, 0.22), transparent 18%, transparent 78%, rgba(5, 11, 20, 0.24)),
+          linear-gradient(180deg, rgba(3, 8, 15, 0.08), rgba(3, 8, 15, 0.16));
       }
 
-      .wall-title {
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--cyan);
-        border-bottom: 1px solid rgba(91, 218, 255, 0.18);
-        font-size: 15px;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-
-      .wall-grid {
-        display: grid;
-        grid-template-columns: 0.85fr 1.3fr 0.75fr;
-        gap: 10px;
-        padding: 12px;
-      }
-
-      .mini-screen {
-        min-height: 136px;
-        border: 1px solid rgba(91, 218, 255, 0.2);
-        border-radius: 6px;
-        padding: 9px;
-        background: rgba(7, 19, 33, 0.86);
-      }
-
-      .mini-screen h3 {
-        margin-bottom: 8px;
-        color: #dff7ff;
-        font-size: 11px;
-        text-transform: uppercase;
-      }
-
-      .priority-list {
-        display: grid;
-        gap: 5px;
-        color: #bcd1df;
-        font-size: 11px;
-      }
-
-      .map {
-        position: relative;
-        height: 95px;
-        overflow: hidden;
-        border-radius: 5px;
-        background:
-          radial-gradient(circle at 44% 42%, rgba(37, 223, 255, 0.28) 0 10%, transparent 11%),
-          radial-gradient(circle at 66% 56%, rgba(85, 232, 169, 0.22) 0 8%, transparent 9%),
-          linear-gradient(135deg, rgba(37, 223, 255, 0.12), rgba(169, 140, 255, 0.08));
-      }
-
-      .bars {
-        display: grid;
-        gap: 8px;
-      }
-
-      .bars span {
-        height: 8px;
-        border-radius: 99px;
-        background:
-          linear-gradient(90deg, var(--green) var(--w), rgba(91, 218, 255, 0.12) var(--w));
-      }
-
-      .server {
+      .room-label {
         position: absolute;
-        top: 66px;
-        width: 82px;
-        height: 178px;
-        padding: 10px;
-        border: 1px solid rgba(91, 218, 255, 0.22);
+        z-index: 2;
+        padding: 7px 14px;
+        border: 1px solid currentColor;
         border-radius: 7px;
-        background: rgba(4, 12, 22, 0.92);
-      }
-
-      .server.left {
-        left: 23%;
-      }
-
-      .server.right {
-        right: 23%;
-      }
-
-      .server i {
-        display: block;
-        height: 10px;
-        margin-bottom: 10px;
-        border-radius: 99px;
-        background: rgba(37, 223, 255, 0.24);
-        box-shadow: 0 0 12px rgba(37, 223, 255, 0.18);
-      }
-
-      .floor {
-        position: absolute;
-        left: -6%;
-        right: -6%;
-        bottom: -8%;
-        height: 71%;
-        transform: perspective(850px) rotateX(58deg);
-        transform-origin: bottom center;
-        background:
-          linear-gradient(90deg, rgba(91, 218, 255, 0.06) 1px, transparent 1px) 0 0 / 74px 74px,
-          linear-gradient(0deg, rgba(91, 218, 255, 0.06) 1px, transparent 1px) 0 0 / 74px 74px,
-          linear-gradient(180deg, rgba(15, 46, 77, 0.75), rgba(6, 16, 29, 0.98));
-        border-top: 1px solid rgba(91, 218, 255, 0.22);
-      }
-
-      .zone {
-        position: absolute;
-        border: 2px solid var(--room-color);
-        border-radius: 10px;
-        background:
-          linear-gradient(135deg, color-mix(in srgb, var(--room-color) 16%, transparent), transparent),
-          rgba(6, 16, 29, 0.54);
-        box-shadow: inset 0 0 32px color-mix(in srgb, var(--room-color) 12%, transparent);
-      }
-
-      .zone::before {
-        content: attr(data-room);
-        position: absolute;
-        top: -31px;
-        left: 18px;
-        padding: 6px 12px;
-        border: 1px solid var(--room-color);
-        border-radius: 6px;
-        color: var(--room-color);
-        background: rgba(5, 13, 24, 0.9);
-        font-size: 13px;
-        font-weight: 800;
+        background: rgba(8, 18, 31, 0.82);
+        box-shadow: 0 0 22px color-mix(in srgb, currentColor 34%, transparent);
+        font-size: 14px;
+        font-weight: 900;
         text-transform: uppercase;
-        box-shadow: 0 0 22px color-mix(in srgb, var(--room-color) 26%, transparent);
       }
 
-      .zone.sales {
-        --room-color: var(--purple);
-        left: 5.5%;
-        top: 305px;
-        width: 28%;
-        height: 205px;
-        clip-path: polygon(0 14%, 78% 0, 100% 22%, 92% 100%, 6% 100%);
-      }
+      .room-label.sales { left: 11%; top: 31%; color: #a88cff; }
+      .room-label.portfolio { right: 13%; top: 31%; color: var(--green); }
+      .room-label.document { left: 52%; bottom: 20%; color: var(--gold); }
+      .room-label.life { right: 3%; bottom: 18%; color: var(--pink); }
 
-      .zone.command {
-        --room-color: var(--cyan);
-        left: 34.5%;
-        top: 322px;
-        width: 31%;
-        height: 235px;
-        clip-path: polygon(8% 0, 92% 0, 100% 16%, 92% 100%, 8% 100%, 0 16%);
-      }
-
-      .zone.portfolio {
-        --room-color: var(--green);
-        right: 5.5%;
-        top: 305px;
-        width: 28%;
-        height: 205px;
-        clip-path: polygon(22% 0, 100% 14%, 94% 100%, 8% 100%, 0 22%);
-      }
-
-      .zone.document {
-        --room-color: var(--gold);
-        left: 23%;
-        bottom: 55px;
-        width: 28%;
-        height: 155px;
-        clip-path: polygon(0 18%, 16% 0, 100% 12%, 88% 100%, 8% 100%);
-      }
-
-      .zone.life {
-        --room-color: var(--magenta);
-        right: 18%;
-        bottom: 48px;
-        width: 25%;
-        height: 150px;
-        clip-path: polygon(12% 0, 100% 18%, 88% 100%, 0 88%, 0 16%);
-      }
-
-      .conference-table {
+      .agent-card {
         position: absolute;
-        left: 38%;
-        top: 420px;
-        width: 24%;
-        height: 100px;
-        border: 2px solid rgba(91, 218, 255, 0.3);
-        border-radius: 24px;
-        background:
-          linear-gradient(90deg, rgba(37, 223, 255, 0.13), rgba(85, 232, 169, 0.09)),
-          rgba(11, 32, 53, 0.96);
-        box-shadow: 0 24px 45px rgba(0, 0, 0, 0.34);
-      }
-
-      .conference-table::before {
-        content: "";
-        position: absolute;
-        inset: 13px 30px;
-        border: 1px solid rgba(91, 218, 255, 0.2);
-        border-radius: 18px;
-      }
-
-      .conference-table::after {
-        content: "COMMAND TABLE";
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        color: rgba(237, 248, 255, 0.74);
-        font-size: 11px;
-        font-weight: 700;
-      }
-
-      .chair {
-        position: absolute;
-        width: 26px;
-        height: 34px;
-        border: 1px solid rgba(91, 218, 255, 0.22);
-        border-radius: 8px 8px 4px 4px;
-        background: rgba(5, 13, 24, 0.9);
-      }
-
-      .chair.c1 { left: 36%; top: 432px; }
-      .chair.c2 { left: 44%; top: 378px; }
-      .chair.c3 { left: 52%; top: 378px; }
-      .chair.c4 { right: 36%; top: 432px; }
-      .chair.c5 { left: 43%; top: 532px; }
-      .chair.c6 { right: 43%; top: 532px; }
-
-      .desk {
-        position: absolute;
-        width: 128px;
-        height: 58px;
-        border: 1px solid rgba(91, 218, 255, 0.24);
+        z-index: 3;
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 9px;
+        width: 220px;
+        min-height: 72px;
+        padding: 9px 10px;
+        border: 1px solid rgba(255, 209, 95, 0.32);
         border-radius: 8px;
+        color: #eaf8ff;
+        background: rgba(7, 17, 29, 0.86);
+        box-shadow: 0 16px 38px rgba(0,0,0,0.34);
+        text-align: left;
+      }
+
+      .agent-card.active {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 2px rgba(255, 209, 95, 0.18), 0 18px 42px rgba(0,0,0,0.44);
+      }
+
+      .mini-avatar {
+        width: 42px;
+        height: 48px;
+        align-self: center;
+        border-radius: 12px 12px 8px 8px;
         background:
-          linear-gradient(180deg, rgba(37, 223, 255, 0.07), transparent),
-          rgba(11, 32, 53, 0.94);
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+          radial-gradient(circle at 50% 30%, #efbd86 0 26%, transparent 27%),
+          linear-gradient(180deg, #1c375d 34%, #12406b 35%);
+        border: 1px solid rgba(88, 217, 255, 0.32);
       }
 
-      .desk::before {
-        content: "";
-        position: absolute;
-        left: 18px;
-        top: -25px;
-        width: 72px;
-        height: 21px;
-        border: 1px solid rgba(91, 218, 255, 0.3);
-        border-radius: 4px;
+      .mini-avatar.robot {
         background:
-          linear-gradient(90deg, rgba(37, 223, 255, 0.18) 20%, transparent 20% 28%, rgba(85, 232, 169, 0.18) 28% 58%, transparent 58%),
-          rgba(3, 13, 24, 0.9);
+          radial-gradient(circle at 37% 25%, #071221 0 3px, transparent 4px),
+          radial-gradient(circle at 63% 25%, #071221 0 3px, transparent 4px),
+          linear-gradient(180deg, #dffbff, #55cfe8);
       }
 
-      .desk::after {
-        content: "";
-        position: absolute;
-        right: 16px;
-        top: -19px;
-        width: 28px;
-        height: 15px;
-        border: 1px solid rgba(91, 218, 255, 0.26);
-        border-radius: 3px;
-        background: rgba(37, 223, 255, 0.12);
+      .agent-card strong {
+        display: block;
+        color: var(--gold);
+        font-size: 12px;
+        text-transform: uppercase;
       }
 
-      .desk.sales { left: 9%; top: 396px; }
-      .desk.follow { left: 21%; top: 447px; }
-      .desk.portfolio { right: 20%; top: 392px; }
-      .desk.risk { right: 8%; top: 447px; }
-      .desk.document { left: 30%; bottom: 84px; }
-      .desk.life { right: 24%; bottom: 82px; }
-
-      .plant {
-        position: absolute;
-        width: 34px;
-        height: 46px;
-      }
-
-      .plant::before {
-        content: "";
-        position: absolute;
-        left: 13px;
-        bottom: 0;
-        width: 18px;
-        height: 18px;
-        border-radius: 4px;
-        background: #263a41;
-        border: 1px solid rgba(91, 218, 255, 0.18);
-      }
-
-      .plant::after {
-        content: "";
-        position: absolute;
-        left: 3px;
-        top: 0;
-        width: 30px;
-        height: 30px;
-        background: var(--green);
-        opacity: 0.78;
-        clip-path: polygon(50% 100%, 38% 52%, 0 44%, 34% 34%, 20% 0, 52% 28%, 76% 0, 66% 36%, 100% 44%, 64% 53%);
-      }
-
-      .plant.p1 { left: 25%; top: 260px; }
-      .plant.p2 { right: 25%; top: 260px; }
-      .plant.p3 { left: 4%; bottom: 48px; }
-      .plant.p4 { right: 4%; bottom: 70px; }
-
-      .agent {
-        position: absolute;
-        z-index: 7;
-        width: 162px;
-        border: 1px solid rgba(91, 218, 255, 0.28);
-        border-radius: 8px;
-        padding: 9px;
-        color: var(--text);
-        background: rgba(6, 17, 30, 0.92);
-        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
-      }
-
-      .agent::before {
-        content: "";
-        position: absolute;
-        left: 18px;
-        top: 19px;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 16px var(--green);
-      }
-
-      .avatar {
-        position: relative;
-        width: 54px;
-        height: 68px;
-        margin: -38px auto 7px;
-      }
-
-      .avatar .hair {
-        position: absolute;
-        left: 8px;
-        top: 0;
-        width: 38px;
-        height: 34px;
-        border-radius: 18px 18px 12px 12px;
-        background: #182637;
-      }
-
-      .avatar .face {
-        position: absolute;
-        left: 12px;
-        top: 9px;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #f1bd8a;
-        border: 2px solid rgba(255, 255, 255, 0.7);
-      }
-
-      .avatar .face::before,
-      .avatar .face::after {
-        content: "";
-        position: absolute;
-        top: 11px;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: #102033;
-      }
-
-      .avatar .face::before { left: 7px; }
-      .avatar .face::after { right: 7px; }
-
-      .avatar .body {
-        position: absolute;
-        left: 9px;
-        bottom: 0;
-        width: 36px;
-        height: 35px;
-        border-radius: 9px 9px 5px 5px;
-        background:
-          linear-gradient(90deg, transparent 47%, rgba(255,255,255,0.55) 48% 52%, transparent 53%),
-          linear-gradient(180deg, #1c466f, #0d263f);
-        border: 1px solid rgba(91, 218, 255, 0.26);
-      }
-
-      .avatar.robot .hair {
-        display: none;
-      }
-
-      .avatar.robot .face {
-        left: 7px;
-        top: 4px;
-        width: 40px;
-        height: 34px;
-        border-radius: 10px;
-        background: #dff8ff;
-      }
-
-      .avatar.robot .body {
-        background: linear-gradient(180deg, #dff8ff, #6ad6f3);
-      }
-
-      .agent h3 {
-        font-size: 13px;
-        line-height: 1.25;
-      }
-
-      .agent p {
-        margin-top: 4px;
-        color: var(--muted);
+      .agent-card span {
+        display: block;
+        margin-top: 3px;
+        color: #b9c9d7;
         font-size: 11px;
-        line-height: 1.3;
       }
 
-      .agent b {
+      .agent-card small {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        margin-top: 7px;
+        margin-top: 8px;
         color: var(--green);
         font-size: 10px;
+        font-weight: 900;
         text-transform: uppercase;
       }
 
-      .agent.command { left: 44%; top: 301px; }
-      .agent.sales { left: 11%; top: 336px; }
-      .agent.follow { left: 3.5%; top: 540px; }
-      .agent.product { left: 12%; bottom: 158px; }
-      .agent.portfolio { right: 18%; top: 336px; }
-      .agent.risk { right: 3.5%; top: 540px; }
-      .agent.document { left: 37%; bottom: 166px; }
-      .agent.life { right: 13%; bottom: 158px; }
-      .agent.memory {
-        left: calc(50% - 125px);
-        bottom: 92px;
+      .asm { left: 15%; top: 42%; }
+      .follow { left: 4%; top: 66%; }
+      .portfolio { right: 13%; top: 42%; }
+      .risk { right: 3%; top: 66%; }
+      .product { left: 33%; bottom: 13%; }
+      .document { right: 25%; bottom: 14%; }
+      .life { right: 0.8%; bottom: 7%; }
+      .memory { left: 42%; bottom: 3%; width: 260px; }
+      .chief {
+        left: 50%;
+        top: 35%;
+        width: 170px;
+        transform: translateX(-50%);
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .chief .mini-avatar { margin: 0 auto; }
+
+      .right-panel {
         display: grid;
-        grid-template-columns: 50px 1fr;
-        width: 250px;
-        align-items: center;
-      }
-
-      .agent.memory .avatar {
-        margin: 0;
-      }
-
-      .agent.selected {
-        border-color: var(--gold);
-        box-shadow: 0 0 0 2px rgba(255, 211, 107, 0.18), 0 18px 40px rgba(0, 0, 0, 0.4);
-      }
-
-      .output-console {
-        position: absolute;
-        left: 28px;
-        right: 28px;
-        bottom: 16px;
-        display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-rows: auto 1fr auto;
         gap: 12px;
-        min-height: 58px;
-        padding: 12px 16px;
-        border: 1px solid rgba(91, 218, 255, 0.2);
-        border-radius: 8px;
-        background: rgba(4, 13, 23, 0.88);
       }
 
-      .output-console h2 {
-        margin-bottom: 4px;
-        font-size: 14px;
-      }
-
-      .output-console p {
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.4;
-      }
-
-      .progress {
-        width: 165px;
-        align-self: center;
-      }
-
-      .progress span {
-        display: block;
-        height: 8px;
-        overflow: hidden;
-        border-radius: 99px;
-        background: rgba(91, 218, 255, 0.12);
-      }
-
-      .progress span::before {
-        content: "";
-        display: block;
-        width: 72%;
-        height: 100%;
-        border-radius: inherit;
-        background: linear-gradient(90deg, var(--cyan), var(--green));
-      }
-
-      .task-tabs {
+      .tabs {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
+        gap: 7px;
         margin-bottom: 10px;
       }
 
-      .task-tabs button {
-        min-height: 34px;
-        padding: 7px;
+      .tabs button {
+        min-height: 35px;
+        color: var(--muted);
         font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
       }
 
-      .task-tabs .active {
-        border-color: rgba(85, 232, 169, 0.48);
-        color: var(--green);
-        background: rgba(85, 232, 169, 0.1);
+      .tabs .active {
+        color: #05111b;
+        border-color: var(--green);
+        background: linear-gradient(135deg, var(--cyan), var(--green));
       }
 
-      .task,
-      .recent {
+      .task, .recent {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: 28px 1fr auto;
         gap: 10px;
         align-items: center;
         margin-top: 8px;
-        padding: 10px;
-        border: 1px solid rgba(91, 218, 255, 0.15);
+        min-height: 54px;
+        padding: 9px;
+        border: 1px solid rgba(88, 217, 255, 0.15);
         border-radius: 8px;
-        background: rgba(8, 20, 34, 0.74);
+        background: rgba(9, 25, 43, 0.72);
       }
 
       .num {
         display: grid;
         place-items: center;
-        width: 22px;
-        height: 22px;
-        border: 1px solid rgba(255, 211, 107, 0.4);
+        width: 24px;
+        height: 24px;
         border-radius: 6px;
         color: var(--gold);
+        border: 1px solid rgba(255, 209, 95, 0.35);
         font-size: 12px;
+        font-weight: 900;
       }
 
-      .task strong,
-      .recent strong {
+      .task strong, .recent strong {
         display: block;
         margin-bottom: 4px;
         font-size: 12px;
       }
 
+      .task small, .recent small {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
       .pill {
-        padding: 4px 7px;
+        display: inline-block;
+        margin-top: 4px;
+        padding: 3px 7px;
         border-radius: 5px;
-        color: #07101d;
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
+        color: #05111b;
         background: var(--gold);
+        font-size: 9px;
+        font-weight: 900;
+        text-transform: uppercase;
       }
 
-      .pill.high {
-        background: var(--danger);
-      }
-
-      .pill.low {
-        background: var(--green);
-      }
+      .pill.high { background: var(--red); }
+      .pill.low { background: var(--green); }
 
       .recent-icon {
         display: grid;
@@ -1005,444 +541,266 @@
         width: 28px;
         height: 28px;
         border-radius: 7px;
-        color: #07101d;
-        font-size: 12px;
-        font-weight: 800;
+        color: #06111b;
         background: var(--green);
+        font-size: 11px;
+        font-weight: 900;
       }
 
-      .footerbar {
+      .view-all {
+        margin-top: 10px;
+        min-height: 38px;
+        color: #c9d9e6;
+        font-size: 12px;
+      }
+
+      .footer {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 1px;
-        margin: 0 12px 10px;
         overflow: hidden;
         background: var(--line);
       }
 
-      .footerbar div {
+      .footer div {
         min-height: 42px;
-        padding: 10px 14px;
-        background: rgba(8, 20, 34, 0.96);
+        padding: 11px 14px;
+        background: rgba(8, 22, 38, 0.96);
         color: var(--muted);
         font-size: 12px;
       }
 
-      .footerbar strong {
-        color: var(--text);
-      }
+      .footer strong { color: var(--text); }
 
-      @media (max-width: 1280px) {
-        .topbar {
-          grid-template-columns: 1fr;
-        }
-
-        .status-board {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .layout {
-          grid-template-columns: 1fr;
-        }
-
-        .office-shell {
-          order: 1;
-        }
-
-        .side {
-          order: 2;
-        }
-
-        .right-panel {
-          order: 3;
-        }
-
-        .office-shell {
-          min-height: 860px;
-        }
-
-        .agent {
-          width: 148px;
-          padding: 8px;
-        }
-
-        .agent h3 {
-          font-size: 12px;
-        }
-
-        .agent p {
-          font-size: 10px;
-        }
-
-        .agent.command { left: 39%; top: 304px; }
-        .agent.sales { left: 8%; top: 342px; }
-        .agent.follow { left: 4%; top: 548px; }
-        .agent.product { left: 16%; bottom: 176px; }
-        .agent.portfolio { right: 8%; top: 342px; }
-        .agent.risk { right: 4%; top: 548px; }
-        .agent.document { left: 39%; bottom: 190px; }
-        .agent.life { right: 18%; bottom: 176px; }
-        .agent.memory {
-          left: calc(50% - 118px);
-          bottom: 94px;
-          width: 236px;
-        }
+      @media (max-width: 1380px) {
+        .page { padding: 10px; }
+        .topbar { grid-template-columns: 1fr; }
+        .status-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .main { grid-template-columns: 1fr; }
+        .stage-wrap { order: 1; min-height: 72vw; }
+        .panel.left { order: 2; }
+        .panel.right { order: 3; }
       }
 
       @media (max-width: 760px) {
-        .topbar,
-        .layout {
-          padding: 10px;
+        .stage-wrap { min-height: 620px; }
+        .footer { grid-template-columns: 1fr; }
+        .agent-card {
+          width: 190px;
+          grid-template-columns: 36px 1fr;
+          padding: 8px;
         }
-
-        .status-board,
-        .footerbar {
-          grid-template-columns: 1fr;
-        }
-
-        .office-shell {
-          min-height: auto;
-        }
-
-        .office {
-          position: relative;
-          display: grid;
-          gap: 10px;
-          padding: 14px;
-        }
-
-        .city-window,
-        .command-wall,
-        .server,
-        .floor,
-        .zone,
-        .conference-table,
-        .chair,
-        .desk,
-        .plant,
-        .output-console {
-          position: static;
-          width: auto;
-          height: auto;
-          transform: none;
-          clip-path: none;
-        }
-
-        .city-window,
-        .server,
-        .floor,
-        .zone,
-        .conference-table,
-        .chair,
-        .desk,
-        .plant {
-          display: none;
-        }
-
-        .command-wall {
-          display: block;
-        }
-
-        .wall-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .agent,
-        .agent.memory {
-          position: static;
-          width: 100%;
-          display: block;
-          margin-top: 42px;
-        }
-
-        .output-console {
-          display: block;
-          margin-top: 10px;
-        }
+        .agent-card span { display: none; }
+        .memory { width: 220px; left: 34%; }
+        .status-strip { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
-    <div class="app">
+    <div class="page">
       <header class="topbar">
         <div class="brand">
-          <h1>Ou AI Command Office <span class="live"><span class="dot"></span>Live Dashboard</span></h1>
-          <p>Your personal AI team for sales, portfolio, documents, and life planning.</p>
+          <h1>Ou AI Command Office <span class="badge"><span class="dot"></span> Live Dashboard</span></h1>
+          <p>Your Personal AI Team • Work Smarter, Decide Better, Live Balanced</p>
         </div>
-        <div class="status-board" aria-label="System status">
-          <div class="system-card"><small>Local Time</small><strong id="clock">08:45 BKK</strong></div>
-          <div class="system-card"><small>System Status</small><strong><span class="dot" style="color: var(--green)"></span> Operational</strong></div>
-          <div class="system-card"><small>Agents Online</small><strong>9 / 9</strong></div>
-          <div class="system-card"><small>Data Source</small><strong>Mock MVP v1</strong></div>
+        <div class="status-strip">
+          <div class="status-item"><small>Tue 03 Jun 2026</small><strong id="clock">08:45 <small>AM BKK</small></strong></div>
+          <div class="status-item"><small>System Status</small><strong class="ok"><span class="dot"></span> All Systems Operational</strong></div>
+          <div class="status-item"><small>Agents Online</small><strong class="ok"><span class="dot"></span> 9 / 9</strong></div>
+          <div class="status-item"><small>Data Sync</small><strong class="ok"><span class="dot"></span> 2m ago</strong></div>
         </div>
-        <div class="profile">
-          <div class="profile-avatar" aria-hidden="true"></div>
-          <div>
-            <strong>Ou</strong>
-            <p>Area Sales Manager<br />ProXES</p>
-          </div>
+        <div class="user-card">
+          <div class="user-avatar" aria-hidden="true"></div>
+          <div><strong>Ou</strong><span>Area Sales Manager<br />ProXES</span></div>
         </div>
       </header>
 
-      <main class="layout">
-        <aside class="side">
-          <div class="panel-title">Command Panel</div>
-          <section class="command-box">
-            <label for="agentSelect">Agent</label>
-            <select id="agentSelect"></select>
-            <label for="commandText">Send command to AI office</label>
-            <textarea id="commandText">Prepare Morning Engine for today.</textarea>
-            <button class="primary" id="sendCommand">Send Command</button>
+      <main class="main">
+        <aside class="panel left">
+          <div class="panel-head"><span>Command Panel</span><span>⌄</span></div>
+          <section class="command-card">
+            <label for="commandText">Send Command to AI Office</label>
+            <div class="command-row">
+              <textarea id="commandText" placeholder="Type your command...">Prepare Morning Engine for today.</textarea>
+              <button class="send-btn" id="sendCommand" aria-label="Send command">›</button>
+            </div>
           </section>
 
-          <div class="quick">
-            <button data-template="morning"><span class="icon bolt"></span><span><strong>Morning Engine</strong><span>Daily command center</span></span></button>
-            <button data-template="sales"><span class="icon people"></span><span><strong>Sales Follow-up</strong><span>Customer and opportunity</span></span></button>
-            <button data-template="portfolio"><span class="icon chart"></span><span><strong>DCA Today</strong><span>Investment decision</span></span></button>
-            <button data-template="document"><span class="icon doc"></span><span><strong>Document Review</strong><span>Create, check, approve</span></span></button>
-            <button data-template="life"><span class="icon heart"></span><span><strong>Life & Balance</strong><span>Family, reminder, astrology</span></span></button>
+          <div class="section-label">⚡ Quick Actions</div>
+          <div class="actions">
+            <button class="action gold" data-template="morning"><span class="icon">☀</span><span><strong>Morning Engine</strong><small>Daily Command Center</small></span></button>
+            <button class="action green" data-template="sales"><span class="icon">👥</span><span><strong>Sales Follow-up</strong><small>Customer & Opportunity</small></span></button>
+            <button class="action purple" data-template="portfolio"><span class="icon">↗</span><span><strong>DCA Today</strong><small>Investment Decision</small></span></button>
+            <button class="action blue" data-template="document"><span class="icon">▣</span><span><strong>Document Review</strong><small>Create / Check / Approve</small></span></button>
+            <button class="action pink" data-template="life"><span class="icon">♥</span><span><strong>Life & Balance</strong><small>Family, Astrology, Reminder</small></span></button>
           </div>
 
-          <div class="room-nav">
-            <div class="panel-title" style="margin: 16px 0 8px">Office Navigation</div>
-            <button data-room="command"><span class="icon bolt"></span><span><strong>Command Room</strong><span>Overview and priorities</span></span></button>
-            <button data-room="sales"><span class="icon people"></span><span><strong>Sales Room</strong><span>ProXES sales operations</span></span></button>
-            <button data-room="portfolio"><span class="icon chart"></span><span><strong>Portfolio Room</strong><span>Investments and DCA</span></span></button>
-            <button data-room="document"><span class="icon doc"></span><span><strong>Document Studio</strong><span>Docs, Excel, PDF, design</span></span></button>
-            <button data-room="life"><span class="icon heart"></span><span><strong>Life Room</strong><span>Family, life, astrology</span></span></button>
+          <div class="section-label">▣ Office Navigation</div>
+          <div class="rooms">
+            <button class="room green" data-agent="chief"><span class="icon">⌘</span><span><strong>Command Room</strong><small>Overview & Priorities</small></span></button>
+            <button class="room blue" data-agent="asm"><span class="icon">●</span><span><strong>Sales Room</strong><small>ProXES Sales Operations</small></span></button>
+            <button class="room green" data-agent="portfolio"><span class="icon">▣</span><span><strong>Portfolio Room</strong><small>Investments & DCA</small></span></button>
+            <button class="room blue" data-agent="document"><span class="icon">▤</span><span><strong>Document Studio</strong><small>Docs, Excel, PDF, Design</small></span></button>
+            <button class="room pink" data-agent="life"><span class="icon">♥</span><span><strong>Life Room</strong><small>Family, Life, Astrology</small></span></button>
           </div>
 
           <div class="quote">
-            <strong>Rule:</strong> dashboard never displays real private context. Use placeholders only unless Ou opens local private files.
+            <strong>Quote of the Day</strong><br />
+            Discipline today, freedom tomorrow.<br />- Ou
           </div>
         </aside>
 
-        <section class="office-shell" aria-label="Ou AI office map">
-          <div class="office">
-            <div class="city-window left" aria-hidden="true"></div>
-            <div class="city-window right" aria-hidden="true"></div>
+        <section class="stage-wrap">
+          <div class="stage">
+            <img class="office-bg" src="assets/office-stage.png" alt="Futuristic personal AI command office with agent rooms" />
+            <div class="room-label sales">Sales Room</div>
+            <div class="room-label portfolio">Portfolio Room</div>
+            <div class="room-label document">Document Studio</div>
+            <div class="room-label life">Life Room</div>
 
-            <div class="server left" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="server right" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
-            <section class="command-wall" aria-label="Command Room mission wall">
-              <div class="wall-title">Command Room</div>
-              <div class="wall-grid">
-                <div class="mini-screen">
-                  <h3>Today's Priorities</h3>
-                  <div class="priority-list">
-                    <span>1 Morning Engine</span>
-                    <span>2 Client meetings</span>
-                    <span>3 Proposal draft</span>
-                    <span>4 Follow-up queue</span>
-                  </div>
-                </div>
-                <div class="mini-screen">
-                  <h3>Mission Overview</h3>
-                  <div class="map"></div>
-                </div>
-                <div class="mini-screen">
-                  <h3>System Health</h3>
-                  <div class="bars">
-                    <span style="--w: 92%"></span>
-                    <span style="--w: 78%"></span>
-                    <span style="--w: 86%"></span>
-                    <span style="--w: 68%"></span>
-                    <span style="--w: 96%"></span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <div class="floor" aria-hidden="true"></div>
-
-            <div class="zone sales" data-room="Sales Room"></div>
-            <div class="zone command" data-room="Command Room"></div>
-            <div class="zone portfolio" data-room="Portfolio Room"></div>
-            <div class="zone document" data-room="Document Studio"></div>
-            <div class="zone life" data-room="Life Room"></div>
-
-            <div class="conference-table" aria-hidden="true"></div>
-            <div class="chair c1" aria-hidden="true"></div>
-            <div class="chair c2" aria-hidden="true"></div>
-            <div class="chair c3" aria-hidden="true"></div>
-            <div class="chair c4" aria-hidden="true"></div>
-            <div class="chair c5" aria-hidden="true"></div>
-            <div class="chair c6" aria-hidden="true"></div>
-
-            <div class="desk sales" aria-hidden="true"></div>
-            <div class="desk follow" aria-hidden="true"></div>
-            <div class="desk portfolio" aria-hidden="true"></div>
-            <div class="desk risk" aria-hidden="true"></div>
-            <div class="desk document" aria-hidden="true"></div>
-            <div class="desk life" aria-hidden="true"></div>
-
-            <div class="plant p1" aria-hidden="true"></div>
-            <div class="plant p2" aria-hidden="true"></div>
-            <div class="plant p3" aria-hidden="true"></div>
-            <div class="plant p4" aria-hidden="true"></div>
-
-            <div id="officeAgents"></div>
-
-            <section class="output-console" id="outputConsole">
-              <div>
-                <h2>Ready</h2>
-                <p>Select an agent in the office map or send a command from the left panel.</p>
-              </div>
-              <div class="progress" aria-label="Office readiness"><span></span></div>
-            </section>
+            <button class="agent-card chief active" data-agent="chief">
+              <span class="mini-avatar robot"></span>
+              <span><strong>Chief of Staff</strong><span>Daily command, priority routing</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card asm" data-agent="asm">
+              <span class="mini-avatar"></span>
+              <span><strong>ASM Sales Agent</strong><span>ProXES Sales Lead</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card follow" data-agent="follow">
+              <span class="mini-avatar"></span>
+              <span><strong>Customer Follow-up</strong><span>Follow-up & Relationship</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card portfolio" data-agent="portfolio">
+              <span class="mini-avatar"></span>
+              <span><strong>Portfolio Agent</strong><span>DCA & Allocation</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card risk" data-agent="risk">
+              <span class="mini-avatar"></span>
+              <span><strong>Risk Manager</strong><span>Risk & Protection</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card product" data-agent="product">
+              <span class="mini-avatar"></span>
+              <span><strong>Product Knowledge</strong><span>Solutions & Technical</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card document" data-agent="document">
+              <span class="mini-avatar"></span>
+              <span><strong>Document Studio</strong><span>Create • Check • Design</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card life" data-agent="life">
+              <span class="mini-avatar"></span>
+              <span><strong>Life Room</strong><span>Family, timing, balance</span><small><span class="dot"></span> Online</small></span>
+            </button>
+            <button class="agent-card memory" data-agent="memory">
+              <span class="mini-avatar robot"></span>
+              <span><strong>Memory Steward</strong><span>Data Vault & Long-term Memory</span><small><span class="dot"></span> Online</small></span>
+            </button>
           </div>
         </section>
 
-        <aside class="right-panel">
-          <div class="panel-title">Task Queue <span class="live" style="margin:0">7</span></div>
-          <div class="task-tabs">
-            <button class="active">Today</button>
-            <button>Upcoming</button>
-            <button>Waiting</button>
-          </div>
+        <aside class="panel right">
+          <div class="panel-head"><span>Task Queue</span><span class="badge">7</span></div>
+          <div class="tabs"><button class="active">Today</button><button>Upcoming</button><button>Waiting</button></div>
           <div id="taskQueue"></div>
+          <button class="view-all">View All Tasks</button>
 
-          <div class="panel-title" style="margin-top:18px">Recent Outputs</div>
+          <div class="panel-head" style="margin-top:18px"><span>Recent Outputs</span></div>
           <div id="recentOutputs"></div>
+          <button class="view-all">View All Outputs</button>
         </aside>
       </main>
 
-      <footer class="footerbar">
-        <div><strong>Repository</strong> DamrongsukOu/ou-ai-command-office</div>
-        <div><strong>Deploy</strong> GitHub Pages / gh-pages</div>
-        <div><strong>Privacy</strong> public-safe mock data only</div>
-        <div><strong>Next</strong> connect local files and real workflows</div>
+      <footer class="footer">
+        <div><strong>Data Source</strong> Mock Data (MVP v1)</div>
+        <div><strong>Last Update</strong> 03 Jun 2026 08:43 AM</div>
+        <div><strong>Next Sync</strong> in 5 min</div>
+        <div><strong>Tip</strong> Use left panel or click any agent to start workflow.</div>
       </footer>
     </div>
 
     <script>
-      const agents = [
-        { id: "chief", name: "Chief of Staff", room: "Command Room", role: "Daily brief, priority routing, quality gate", pos: "command", avatar: "robot" },
-        { id: "asm", name: "ASM Sales Agent", room: "Sales Room", role: "Visit plan, opportunity, weekly report", pos: "sales" },
-        { id: "follow", name: "Customer Follow-up", room: "Sales Room", role: "Follow-up email and Salesforce action", pos: "follow" },
-        { id: "product", name: "Product Knowledge", room: "Sales Room", role: "Technical fit, FAQ, proposal support", pos: "product" },
-        { id: "portfolio", name: "Portfolio Agent", room: "Portfolio Room", role: "DCA, allocation, investment decision", pos: "portfolio" },
-        { id: "risk", name: "Risk Manager", room: "Portfolio Room", role: "Risk, concentration, drawdown watch", pos: "risk" },
-        { id: "document", name: "Document Studio", room: "Document Studio", role: "PDF, Excel, presentation, artwork", pos: "document" },
-        { id: "life", name: "Life & Astrology", room: "Life Room", role: "Family planning, timing, reminder lens", pos: "life" },
-        { id: "memory", name: "Memory Steward", room: "Data Vault", role: "Data hygiene and workflow memory", pos: "memory", avatar: "robot" }
-      ];
+      const agents = {
+        chief: ["Chief of Staff", "Daily command, priority routing, quality gate."],
+        asm: ["ASM Sales Agent", "Visit plan, opportunity analysis, proposal support."],
+        follow: ["Customer Follow-up", "Email follow-up, relationship note, Salesforce draft."],
+        portfolio: ["Portfolio Agent", "DCA decision, allocation check, risk-aware timing."],
+        risk: ["Risk Manager", "Portfolio protection, concentration, drawdown watch."],
+        product: ["Product Knowledge", "Solutions fit, technical detail, proposal Q&A."],
+        document: ["Document Studio", "PDF, Excel, presentation, artwork, quality check."],
+        life: ["Life & Balance", "Family, reminder, astrology lens, practical planning."],
+        memory: ["Memory Steward", "Data vault, naming rules, public/private separation."]
+      };
 
       const templates = {
-        morning: "Summarize Morning Engine today: schedule, top 3 priorities, must-win follow-up, push/waiting items, Salesforce actions, risks, critical questions, time-blocked plan, finish-before-6 PM plan.",
-        sales: "Prepare customer follow-up: customer snapshot, last interaction, open item, recommended email, Salesforce update draft, next action, due date.",
-        portfolio: "Prepare Portfolio/DCA decision using allocation truth from dashboard and live market timing as refreshed data. Use mock data only in MVP.",
-        document: "Prepare document review: requirement summary, layout plan, quality check, revision notes, final output path placeholder.",
-        life: "Prepare Life & Astrology brief: work, family, money, energy, timing suggestion, color/element support, risk/avoid, practical action."
+        morning: "Prepare Morning Engine: schedule, top 3 priorities, must-win follow-up, waiting items, Salesforce actions, critical questions, time-blocked plan.",
+        sales: "Prepare Sales Follow-up: customer snapshot, last interaction, opportunity, risk, next action, email draft.",
+        portfolio: "Prepare DCA Today: allocation truth, timing lens, risk note, buy/wait decision using mock MVP data only.",
+        document: "Prepare Document Review: requirement summary, layout plan, quality gate, revision notes.",
+        life: "Prepare Life & Balance brief: family, reminders, energy, timing suggestion, practical action."
       };
 
       const tasks = [
         ["Prepare Morning Engine", "08:00", "high", "In Progress"],
-        ["Client Visit - KRS Rayong", "10:00", "high", "Pending"],
+        ["Client Visit - KRS (Rayong)", "10:00", "high", "Pending"],
         ["Proposal - Oil & Gas Project", "13:30", "medium", "Pending"],
         ["Follow-up - Thai Polycons", "15:00", "medium", "Pending"],
         ["DCA Decision - Today", "20:30", "high", "Pending"],
-        ["Weekly Sales Report", "17:00", "low", "Draft"],
+        ["Weekly Sales Report", "17:00", "low", "Pending"],
         ["Life Checklist & Astrology", "21:00", "low", "Pending"]
       ];
 
       const outputs = [
         ["ME", "Morning Engine - 03/06", "Summary", "08:01"],
-        ["CF", "Client Follow-up Email", "Email draft", "08:10"],
+        ["CF", "Client Follow-up Email (KRS)", "Email Draft", "08:10"],
         ["DC", "DCA Recommendation", "Report", "08:15"],
-        ["SR", "Weekly Sales Report", "Excel draft", "Yesterday"],
-        ["LI", "LinkedIn Post Draft", "Post draft", "Yesterday"]
+        ["SR", "Weekly Sales Report (Draft)", "Excel", "Yesterday"],
+        ["LI", "LinkedIn Post Draft", "Post Draft", "Yesterday"]
       ];
 
-      const agentSelect = document.querySelector("#agentSelect");
-      const officeAgents = document.querySelector("#officeAgents");
-      const outputConsole = document.querySelector("#outputConsole");
+      const commandText = document.querySelector("#commandText");
 
-      function setClock() {
+      function updateClock() {
         const now = new Date();
-        const time = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" });
-        document.querySelector("#clock").textContent = `${time} BKK`;
+        document.querySelector("#clock").innerHTML = `${now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" })} <small>BKK</small>`;
       }
 
-      function setSelectedAgent(id) {
-        document.querySelectorAll(".agent").forEach((node) => node.classList.toggle("selected", node.dataset.agent === id));
-        const agent = agents.find((item) => item.id === id);
-        agentSelect.value = id;
-        document.querySelector("#commandText").value = `Use ${agent.name} for ${agent.role}.`;
-        outputConsole.innerHTML = `
-          <div>
-            <h2>${agent.name}</h2>
-            <p><strong>${agent.room}:</strong> ${agent.role}. Ready to produce a mock workflow output without exposing private context.</p>
-          </div>
-          <div class="progress" aria-label="Agent readiness"><span></span></div>
-        `;
+      function selectAgent(id) {
+        document.querySelectorAll("[data-agent]").forEach((node) => node.classList.toggle("active", node.dataset.agent === id));
+        const [name, role] = agents[id];
+        commandText.value = `Use ${name}: ${role}`;
       }
 
-      agents.forEach((agent) => {
-        agentSelect.insertAdjacentHTML("beforeend", `<option value="${agent.id}">${agent.name}</option>`);
-        const button = document.createElement("button");
-        button.className = `agent ${agent.pos}`;
-        button.dataset.agent = agent.id;
-        button.innerHTML = `
-          <div class="avatar ${agent.avatar || ""}"><div class="hair"></div><div class="face"></div><div class="body"></div></div>
-          <div>
-            <h3>${agent.name}</h3>
-            <p>${agent.role}</p>
-            <b><span class="dot"></span> Online</b>
-          </div>
-        `;
-        button.addEventListener("click", () => setSelectedAgent(agent.id));
-        officeAgents.appendChild(button);
+      document.querySelectorAll("[data-agent]").forEach((node) => {
+        node.addEventListener("click", () => selectAgent(node.dataset.agent));
+      });
+
+      document.querySelectorAll("[data-template]").forEach((node) => {
+        node.addEventListener("click", () => { commandText.value = templates[node.dataset.template]; });
+      });
+
+      document.querySelector("#sendCommand").addEventListener("click", () => {
+        const active = document.querySelector(".agent-card.active")?.dataset.agent || "chief";
+        const [name] = agents[active];
+        commandText.value = `${name} accepted: ${commandText.value}`;
       });
 
       document.querySelector("#taskQueue").innerHTML = tasks.map((task, index) => `
         <div class="task">
           <span class="num">${index + 1}</span>
-          <div><strong>${task[0]}</strong><small>${task[3]}</small></div>
-          <div><small>${task[1]}</small><br /><span class="pill ${task[2]}">${task[2]}</span></div>
+          <div><strong>${task[0]}</strong><small><span class="pill ${task[2]}">${task[2]}</span></small></div>
+          <div><small>${task[1]}</small><br /><small>${task[3]}</small></div>
         </div>
       `).join("");
 
-      document.querySelector("#recentOutputs").innerHTML = outputs.map((output) => `
+      document.querySelector("#recentOutputs").innerHTML = outputs.map((item) => `
         <div class="recent">
-          <span class="recent-icon">${output[0]}</span>
-          <div><strong>${output[1]}</strong><small>${output[2]}</small></div>
-          <small>${output[3]}</small>
+          <span class="recent-icon">${item[0]}</span>
+          <div><strong>${item[1]}</strong><small>${item[2]}</small></div>
+          <small>${item[3]}</small>
         </div>
       `).join("");
 
-      document.querySelectorAll("[data-template]").forEach((button) => {
-        button.addEventListener("click", () => {
-          document.querySelector("#commandText").value = templates[button.dataset.template];
-        });
-      });
-
-      document.querySelectorAll("[data-room]").forEach((button) => {
-        button.addEventListener("click", () => {
-          const room = button.dataset.room;
-          const target = agents.find((agent) => agent.pos === room || agent.room.toLowerCase().includes(room));
-          if (target) setSelectedAgent(target.id);
-        });
-      });
-
-      document.querySelector("#sendCommand").addEventListener("click", () => {
-        const agent = agents.find((item) => item.id === agentSelect.value);
-        const command = document.querySelector("#commandText").value;
-        outputConsole.innerHTML = `
-          <div>
-            <h2>${agent.name} Output</h2>
-            <p>${command}</p>
-            <p>Quality Gate: context checked, action drafted, risk note required, private data not exposed.</p>
-          </div>
-          <div class="progress" aria-label="Workflow progress"><span></span></div>
-        `;
-      });
-
-      agentSelect.addEventListener("change", () => setSelectedAgent(agentSelect.value));
-      setClock();
-      setInterval(setClock, 30000);
-      setSelectedAgent("chief");
+      updateClock();
+      setInterval(updateClock, 30000);
     </script>
   </body>
 </html>
